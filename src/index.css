@@ -1,1 +1,71 @@
 @import "tailwindcss";
+
+.rubik {
+  font-family: "Rubik", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+}
+
+@theme {
+
+    --color-ink-black-50: rgb(229 242 255);
+    --color-ink-black-100: rgb(204 229 255);
+    --color-ink-black-200: rgb(153 202 255);
+    --color-ink-black-300: rgb(102 176 255);
+    --color-ink-black-400: rgb(51 150 255);
+    --color-ink-black-500: rgb(0 123 255);
+    --color-ink-black-600: rgb(0 99 204);
+    --color-ink-black-700: rgb(0 74 153);
+    --color-ink-black-800: rgb(0 49 102);
+    --color-ink-black-900: rgb(0 25 51);
+    --color-ink-black-950: rgb(0 17 36);
+
+    --color-dark-teal-50: rgb(231 254 254);
+    --color-dark-teal-100: rgb(206 252 253);
+    --color-dark-teal-200: rgb(157 249 251);
+    --color-dark-teal-300: rgb(108 247 249);
+    --color-dark-teal-400: rgb(59 244 247);
+    --color-dark-teal-500: rgb(10 241 245);
+    --color-dark-teal-600: rgb(8 193 196);
+    --color-dark-teal-700: rgb(6 145 147);
+    --color-dark-teal-800: rgb(4 96 98);
+    --color-dark-teal-900: rgb(2 48 49);
+    --color-dark-teal-950: rgb(1 34 34);
+
+    --color-ocean-blue-50: rgb(232 245 253);
+    --color-ocean-blue-100: rgb(209 236 250);
+    --color-ocean-blue-200: rgb(163 216 245);
+    --color-ocean-blue-300: rgb(117 197 240);
+    --color-ocean-blue-400: rgb(70 178 236);
+    --color-ocean-blue-500: rgb(24 158 231);
+    --color-ocean-blue-600: rgb(19 127 185);
+    --color-ocean-blue-700: rgb(15 95 138);
+    --color-ocean-blue-800: rgb(10 63 92);
+    --color-ocean-blue-900: rgb(5 32 46);
+    --color-ocean-blue-950: rgb(3 22 32);
+
+    --color-sky-surge-50: rgb(231 248 253);
+    --color-sky-surge-100: rgb(208 242 251);
+    --color-sky-surge-200: rgb(160 229 248);
+    --color-sky-surge-300: rgb(113 216 244);
+    --color-sky-surge-400: rgb(65 203 241);
+    --color-sky-surge-500: rgb(18 190 237);
+    --color-sky-surge-600: rgb(14 152 190);
+    --color-sky-surge-700: rgb(11 114 142);
+    --color-sky-surge-800: rgb(7 76 95);
+    --color-sky-surge-900: rgb(4 38 47);
+    --color-sky-surge-950: rgb(2 27 33);
+
+    --color-bright-sky-50: rgb(231 248 254);
+    --color-bright-sky-100: rgb(207 242 252);
+    --color-bright-sky-200: rgb(158 228 250);
+    --color-bright-sky-300: rgb(110 215 247);
+    --color-bright-sky-400: rgb(61 202 245);
+    --color-bright-sky-500: rgb(13 189 242);
+    --color-bright-sky-600: rgb(10 151 194);
+    --color-bright-sky-700: rgb(8 113 145);
+    --color-bright-sky-800: rgb(5 75 97);
+    --color-bright-sky-900: rgb(3 38 48);
+    --color-bright-sky-950: rgb(2 26 34);
+}
