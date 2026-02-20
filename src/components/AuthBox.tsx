@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
+import { register } from "../services/Authentication.ts";
 
 interface AuthBoxProps {
     type: "login" | "register";
@@ -13,6 +15,8 @@ const AuthBox = ({type}: AuthBoxProps) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
+    const navigate = useNavigate();
+
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         if (/^[A-Za-zÀ-ÖØ-öø-ÿ' -]{0,50}$/.test(value)) {
@@ -21,6 +25,20 @@ const AuthBox = ({type}: AuthBoxProps) => {
                 setFirstName(value);
             } else {
                 setLastName(value);
+            }
+        }
+    }
+
+    const handleSubmit = async() => {
+        if (type === "register") {
+
+            console.log("Attempting to register with:", {firstName, lastName, email, password});
+
+            try {
+                await register(firstName, lastName, email, password);
+                navigate("/home");
+            } catch (error) {
+                console.error("Registration error:", error);
             }
         }
     }
@@ -34,7 +52,7 @@ const AuthBox = ({type}: AuthBoxProps) => {
             <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email Address" className={inputStyle} required/>
             <input value={password} minLength={8} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" className={inputStyle} required/>
             {type === "login" && <p className="text-dark-teal-700 hover:text-dark-teal-800 hover:cursor-pointer mt-2">Forgot Password</p>}
-            <button type="submit" className="bg-dark-teal-700 hover:bg-dark-teal-800 hover:cursor-pointer text-white py-3 px-4 rounded-lg transition duration-200 mt-5 w-full">{type === "register" ? "Sign Up" : "Log In"}</button>
+            <button type="submit" onClick={() => handleSubmit()} className="bg-dark-teal-700 hover:bg-dark-teal-800 hover:cursor-pointer text-white py-3 px-4 rounded-lg transition duration-200 mt-5 w-full">{type === "register" ? "Sign Up" : "Log In"}</button>
         </form>
     </div>
 }
