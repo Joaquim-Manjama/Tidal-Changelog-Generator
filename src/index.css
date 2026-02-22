@@ -86,6 +86,7 @@
   background-size: 300% 300%;
   animation: tidalFlow 18s ease infinite;
   overflow: hidden;
+  color: white;
 }
 
 @keyframes tidalFlow {

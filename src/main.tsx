@@ -5,7 +5,7 @@ import AuthProvider from './contexts/AuthContext.tsx';
 import './index.css'
 import App from './App.tsx'
 import Auth from './pages/Auth.tsx';
-import Home from './pages/Home.tsx';
+import Dashboard from './pages/Dashboard.tsx';
 import NotFound from './pages/NotFound.tsx';
 
 createRoot(document.getElementById('root')!).render(
@@ -15,7 +15,7 @@ createRoot(document.getElementById('root')!).render(
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/auth" element={<Auth />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           {/* Page Not Found*/}
           <Route path="*" element={<NotFound />} />
         </Routes>

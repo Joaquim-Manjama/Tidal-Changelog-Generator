@@ -13,7 +13,7 @@ interface AuthContextType {
     setEmail: (email: string) => void;
     token: string;
     setToken: (token: string) => void;
-    getNewToken: () => void;
+    getNewInfo: () => void;
 }
 
 const AuthProvider = ({children}: PropsWithChildren) => {
@@ -23,7 +23,10 @@ const AuthProvider = ({children}: PropsWithChildren) => {
     const [email, setEmail] = useState("");
     const [token, setToken] = useState("");
 
-    const getNewToken = () => {
+    const getNewInfo = () => {
+        setFirstName(localStorage.getItem("firstName") || "");
+        setLastName(localStorage.getItem("lastName") || "");
+        setEmail(localStorage.getItem("email") || "");
         setToken(localStorage.getItem("token") || "");
     }
 
@@ -36,7 +39,7 @@ const AuthProvider = ({children}: PropsWithChildren) => {
         setEmail,
         token,
         setToken,
-        getNewToken
+        getNewInfo
     }
 
     return <AuthContext.Provider value={values}>

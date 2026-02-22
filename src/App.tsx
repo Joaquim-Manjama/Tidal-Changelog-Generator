@@ -4,7 +4,7 @@ import { NavLink } from "react-router"
 function App() {
 
   return (
-    <div className="w-full h-screen flex flex-col items-center text-white">
+    <div className="w-full h-screen flex flex-col items-center">
       <Header isMainPage={true} />      
       <h1 className="text-6xl font-normal">Track. Generate. Ship.</h1>
       <h1 className="text-gray-400 font-thin mt-10">Turn chaotic commit history into structured, release-ready changelogs!</h1>
