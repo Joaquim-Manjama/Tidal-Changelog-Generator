@@ -31,14 +31,13 @@ const AuthBox = ({type}: AuthBoxProps) => {
 
     const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
-
         if (type === "register") {
 
             console.log("Attempting to register with:", {firstName, lastName, email, password});
 
             try {
                 await register(firstName, lastName, email, password);
-                navigate("/home");
+                navigate("/dashboard");
             } catch (error) {
                 console.error("Registration error:", error);
             }
@@ -50,12 +49,11 @@ const AuthBox = ({type}: AuthBoxProps) => {
             try {
                 await login(email, password);
                 navigate("/dashboard");
-            
             } catch (error) {
                 console.error("Login error:", error);
             }
-
         }
+
     }
 
     return <div className={`flex flex-col w-[500px] ${type === "register" ? "h-[500px]" : "h-[400px]"} rounded-2xl bg-white/2 backdrop-blur-xl border border-white/10 shadow-xl p-8`}>

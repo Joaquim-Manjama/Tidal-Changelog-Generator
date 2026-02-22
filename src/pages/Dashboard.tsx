@@ -1,12 +1,6 @@
-import { useEffect } from "react";
-import { useAuthContext } from "../contexts/AuthContext";
-
 const Home = () => {
-    const {firstName, lastName, getNewInfo} = useAuthContext() || {firstName: "", lastName: "", getNewInfo: () => {}};
-
-    useEffect(() => {
-        getNewInfo();
-    }, []);
+    const firstName = localStorage.getItem("firstName") || "User";
+    const lastName = localStorage.getItem("lastName") || "";
 
     return <div className="p-4">
         <h1 className="text-2xl font-normal">Welcome, {firstName} {lastName}!</h1>
