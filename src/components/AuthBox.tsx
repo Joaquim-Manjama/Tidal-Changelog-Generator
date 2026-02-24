@@ -38,7 +38,7 @@ const AuthBox = ({type}: AuthBoxProps) => {
         }
     }
 
-    const handleSubmit = async(e: React.ChangeEvent) => {
+    const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
         setPasswordVisible(false);
         setLoading(true);
@@ -84,7 +84,7 @@ const AuthBox = ({type}: AuthBoxProps) => {
     return <div className={`flex flex-col w-[500px] ${type === "register" ? "h-[500px]" : "h-[400px]"} rounded-2xl bg-white/2 backdrop-blur-xl border border-white/10 shadow-xl p-8 ${loading && "cursor-progress"}`}>
         <h1 className="font-light text-3xl">{type === "register" ? "Sign Up" : "Log In"}</h1>
         <p className="font-thin text-sm text-gray-300 mt-1 mb-5">{type === "register" ? "Create a new account" : "Log in to your account"}</p>
-        <form action="" className="w-full relative">
+        <form action="" className="w-full relative" onSubmit={(e) => handleSubmit(e)}>
             {type === "register" && <input value={firstName} onChange={(e) => handleNameChange(e)} type="text" placeholder="First Name" className={`${inputStyle} ${loading && "hover:cursor-not-allowed"}`} required/>}
             {type === "register" && <input value={lastName} onChange={(e) => handleNameChange(e)} type="text" placeholder="Last Name" className={`${inputStyle} ${loading && "hover:cursor-not-allowed"}`} required/>}
             <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email Address" className={`${inputStyle} ${loading && "hover:cursor-not-allowed"}`} required/>
@@ -93,7 +93,7 @@ const AuthBox = ({type}: AuthBoxProps) => {
                 <span className="material-symbols-outlined">{`visibility${passwordVisible ? "_off" : ""}`}</span>
             </button>
             {type === "login" && <p className="text-dark-teal-700 hover:text-dark-teal-800 hover:cursor-pointer mt-2">Forgot Password</p>}
-            <button type="submit" onSubmit={handleSubmit} onClick={(e) => handleSubmit(e)} className={`${loading ? "bg-gray-600 hover:cursor-not-allowed" :"bg-dark-teal-700 hover:bg-dark-teal-800 hover:cursor-pointer"} text-white py-3 px-4 rounded-lg transition duration-200 mt-5 w-full`}>{type === "register" ? "Sign Up" : "Log In"}</button>
+            <button type="submit" onClick={(e) => handleSubmit(e)} className={`${loading ? "bg-gray-600 hover:cursor-not-allowed" :"bg-dark-teal-700 hover:bg-dark-teal-800 hover:cursor-pointer"} text-white py-3 px-4 rounded-lg transition duration-200 mt-5 w-full`}>{type === "register" ? "Sign Up" : "Log In"}</button>
         </form>
     </div>
 }
