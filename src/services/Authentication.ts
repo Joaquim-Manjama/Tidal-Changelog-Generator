@@ -1,5 +1,3 @@
-import storeInformation from "./Util";
-
 const API_URL = "http://localhost:8080/auth";
 
 export const register = async (firstName: string, lastName: string, email: string, password: string) => {
@@ -43,12 +41,14 @@ const authenticate = async (firstName: string, lastName: string, email: string, 
         console.log("Status:", response.status);
         const text = await response.text(); // Get raw response
         console.log("Raw response:", text);
+        const token = JSON.parse(text)?.token || "";
+        localStorage.setItem("token", token)
+
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        storeInformation({firstName: JSON.parse(text).firstName, lastName: JSON.parse(text).lastName, email: JSON.parse(text).email, token: JSON.parse(text).token});
         return JSON.parse(text);
     } catch (error) {
         console.error(`${type} error:`, error);

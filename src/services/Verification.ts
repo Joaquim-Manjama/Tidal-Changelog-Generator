@@ -1,5 +1,3 @@
-import storeInformation from "./Util";
-
 const API_URL = "http://localhost:8080/auth";
 
 interface UserData {
@@ -8,8 +6,10 @@ interface UserData {
     email: string;
 }
 
-const verificate = async (token: string): Promise<UserData> => {
+const verificate = async (): Promise<UserData> => {
     
+    const token = localStorage.getItem("token");
+
     try {
         const response = await fetch(`${API_URL}/me`, {
             method: "GET",
@@ -27,7 +27,6 @@ const verificate = async (token: string): Promise<UserData> => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        storeInformation({firstName: JSON.parse(text).firstName, lastName: JSON.parse(text).lastName, email: JSON.parse(text).email, token: JSON.parse(text).token});
         return JSON.parse(text);
     } catch (error) {
         console.error(`Verification error:`, error);
