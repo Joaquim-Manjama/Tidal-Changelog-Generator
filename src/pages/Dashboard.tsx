@@ -3,9 +3,10 @@ import { useUserData } from '../contexts/UserDataContext.tsx';
 import verificate from '../services/Verification.ts';
 import { useNavigate } from 'react-router';
 import SideBar from '../components/SideBar.tsx'
+import Header from '../components/Header.tsx'
 
 const Home = () => {
-    const { firstName, lastName, setUserInfo} = useUserData();
+    const { firstName, setUserInfo} = useUserData();
     const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
@@ -40,10 +41,11 @@ const Home = () => {
             <h1 className="text-2xl font-normal">Loading...</h1>
         </div>
     }
-    return <div className="p-4 w-full h-screen relative bg-gray-200">
+    return <div className="p-4 pr-0 w-full h-screen flex-row bg-gray-200">
         <SideBar/> 
-        <div className='ml-[204px] p-5 mt-[-16px] w-[100vw] text-gray-900'>
-            <h1 className="text-3xl font-medium">Hello, {firstName}!</h1>
+        <div className='ml-[204px] p-5 mt-[-16px] text-black'>
+            <Header type="dashboard"/>
+            <h1 className="text-3xl font-medium">Hello {firstName}!</h1>
         </div>
     </div>
 }
