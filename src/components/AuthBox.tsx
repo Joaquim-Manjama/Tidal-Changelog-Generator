@@ -93,7 +93,7 @@ const AuthBox = ({type}: AuthBoxProps) => {
                 <span className="material-symbols-outlined">{`visibility${passwordVisible ? "_off" : ""}`}</span>
             </button>
             {type === "login" && <p className="text-dark-teal-700 hover:text-dark-teal-800 hover:cursor-pointer mt-2">Forgot Password</p>}
-            <button type="submit" onClick={(e) => handleSubmit(e)} className={`${loading ? "bg-gray-600 hover:cursor-not-allowed" :"bg-dark-teal-700 hover:bg-dark-teal-800 hover:cursor-pointer"} text-white py-3 px-4 rounded-lg transition duration-200 mt-5 w-full`}>{type === "register" ? "Sign Up" : "Log In"}</button>
+            <button type="submit" className={`${loading ? "bg-gray-600 hover:cursor-not-allowed" :"bg-dark-teal-700 hover:bg-dark-teal-800 hover:cursor-pointer"} text-white py-3 px-4 rounded-lg transition duration-200 mt-5 w-full`}>{type === "register" ? "Sign Up" : "Log In"}</button>
         </form>
     </div>
 }
