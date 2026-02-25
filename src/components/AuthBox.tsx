@@ -89,7 +89,7 @@ const AuthBox = ({type}: AuthBoxProps) => {
             {type === "register" && <input value={lastName} onChange={(e) => handleNameChange(e)} type="text" placeholder="Last Name" className={`${inputStyle} ${loading && "hover:cursor-not-allowed"}`} required/>}
             <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email Address" className={`${inputStyle} ${loading && "hover:cursor-not-allowed"}`} required/>
             <input value={password} minLength={6} onChange={(e) => setPassword(e.target.value)} type={passwordVisible ? "text": "password"} placeholder="Password" className={`${inputStyle} ${loading && "hover:cursor-not-allowed"}`} required/>
-            <button className={`absolute ${type == "register" ? "right-5 bottom-23" : "right-5 top-21"} hover:cursor-pointer text-dark-teal-700`} onClick={() => setPasswordVisible(prev => !prev)}>
+            <button className={`absolute scale-[1.1] hover:text-dark-teal-800 ${type == "register" ? "right-5 bottom-[94px]" : "right-5 top-[84px]"} hover:cursor-pointer text-dark-teal-700`} onClick={() => setPasswordVisible(prev => !prev)}>
                 <span className="material-symbols-outlined">{`visibility${passwordVisible ? "_off" : ""}`}</span>
             </button>
             {type === "login" && <p className="text-dark-teal-700 hover:text-dark-teal-800 hover:cursor-pointer mt-2">Forgot Password</p>}
