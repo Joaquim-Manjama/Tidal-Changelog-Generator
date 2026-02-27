@@ -4,9 +4,12 @@ import verificate from '../services/Verification.ts';
 import { useNavigate } from 'react-router';
 import SideBar from '../components/SideBar.tsx'
 import Header from '../components/Header.tsx'
+import { getProjects } from '../services/Projects.ts';
+import NoProjects from '../components/NoProjects.tsx';
+import '../index.css'
 
 const Home = () => {
-    const { firstName, setUserInfo} = useUserData();
+    const { firstName, projects, setUserInfo, setUserProjects} = useUserData();
     const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
@@ -20,6 +23,18 @@ const Home = () => {
                 if (result) {
                     setUserInfo(result.firstName, result.lastName, result.email);
                     setLoading(false);
+
+                    try {
+                        const projectData = await getProjects();
+
+                        if (projectData) {
+                            setUserProjects(projectData);
+                        }
+                    } catch (error) {
+                        console.error(error);
+                    }
+                    
+
                 } else {
                     setUserInfo("", "", "");
                     navigate("/auth");
@@ -41,11 +56,12 @@ const Home = () => {
             <h1 className="text-2xl font-normal">Loading...</h1>
         </div>
     }
-    return <div className="p-4 pr-0 w-full h-screen flex-row bg-gray-200">
+    return <div className="p-4 pr-0 w-full h-screen flex-row texture">
         <SideBar/> 
-        <div className='ml-[204px] p-5 mt-[-16px] text-black'>
+        <div className='ml-[204px] p-5 mt-[-16px] text-black border h-screen'>
             <Header type="dashboard"/>
-            <h1 className="text-3xl font-medium">Hello {firstName}!</h1>
+            <h1 className="text-3xl font-medium mb-30">Hello {firstName}!</h1>
+            {projects.length == 0 && <NoProjects/>}
         </div>
     </div>
 }
