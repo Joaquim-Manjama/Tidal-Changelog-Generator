@@ -8,10 +8,12 @@ import { getProjects } from '../services/Projects.ts';
 import NoProjects from '../components/NoProjects.tsx';
 import '../index.css'
 import Project from '../components/Project.tsx';
+import CreateProjectForm from '../components/CreateProjectForm.tsx';
 
 const Home = () => {
     const { firstName, projects, setUserInfo, setUserProjects} = useUserData();
     const [loading, setLoading] = useState<boolean>(true);
+    const [isFormActive, setIsFormActive] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -57,29 +59,30 @@ const Home = () => {
             <h1 className="text-2xl font-normal">Loading...</h1>
         </div>
     }
-    
+
     return <div className="p-4 pr-0 w-full h-screen flex-row texture">
         <SideBar/> 
         <div className='ml-[204px] p-5 mt-[-16px] text-black border h-screen'>
             <Header type="dashboard"/>
-            <h1 className="text-4xl font-medium mb-30">Hello {firstName}!</h1>
+            <h1 className="text-4xl font-medium mb-10">Hello {firstName}!</h1>
             {
-            projects.length == 0? 
-            <NoProjects/> 
-            : 
-            <div className=''>
-                <div className='flex flex-row justify-between mb-10'>
-                    <h1 className='text-3xl'>Your Projects</h1>
-                    <button className="bg-dark-teal-700 text-white p-4 pt-2 pb-2 rounded rounded-[10px] shadow-xl hover:bg-dark-teal-800 hover:cursor-pointer">+</button>
-                </div> 
-                <div className='flex flex-row justify-center p-4'>
-                    {projects.map((project) => (
-                        <Project name={project.name} slug={project.slug}/>
-                    ))}
-               </div>
-            </div>
+                projects.length == 0? 
+                <NoProjects/> 
+                : 
+                <div className=''>
+                    <div className='flex flex-row justify-between mb-10'>
+                        <h1 className='text-3xl'>Your Projects</h1>
+                        <button onClick={() => setIsFormActive(true)} className="bg-dark-teal-700 text-white p-4 pt-2 pb-2 rounded rounded-[10px] shadow-xl hover:bg-dark-teal-800 hover:cursor-pointer">+</button>
+                    </div> 
+                    <div className='flex flex-row flex-wrap justify-center p-4 gap-10'>
+                        {projects.map((project) => (
+                            <Project id={project.id} name={project.name} slug={project.slug}/>
+                        ))}
+                    </div>
+                </div>
             }
         </div>
+        {isFormActive && <CreateProjectForm onClose={() => setIsFormActive(false)}/>}
     </div>
 }
 
