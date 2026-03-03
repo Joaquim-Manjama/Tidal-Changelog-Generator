@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CreateProjectForm from "./CreateProjectForm";
+import ProjectForm from "./ProjectForm";
 
 const NoProjects = () => {
 
@@ -10,7 +10,7 @@ const NoProjects = () => {
     }
 
     if (isFormActive) {
-        return <CreateProjectForm onClose={() => setIsFormActive(false)}/>
+        return <ProjectForm project={null} onClose={() => setIsFormActive(false)}/>
     }
 
     return <div className="flex flex-col items-center text-gray-600 gap-10 transition duration-200">

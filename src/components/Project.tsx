@@ -1,17 +1,22 @@
 import { useState } from "react";
 import { deleteProject } from "../services/Projects";
+import { useUserData } from "../contexts/UserDataContext";
 
 interface ProjectProps {
     id: number;
     name: string;
     slug: string;
+    githubRepo: string,
+    onUpdate: () => void;
 }
 
-const Project = ({id, name, slug}: ProjectProps) => {
+const Project = ({id, name, slug, githubRepo, onUpdate}: ProjectProps) => {
 
     const menuItemStyle = `p-2 text-white w-full hover:cursor-pointer hover:bg-white/2 text-center`;
 
-    const [isMenuActive, setIsMenuActive] = useState<boolean>(true);
+    const [isMenuActive, setIsMenuActive] = useState<boolean>(false);
+
+    const {setCurrentProject} = useUserData();
 
     const handleDelete = async () => {
         
@@ -20,7 +25,13 @@ const Project = ({id, name, slug}: ProjectProps) => {
         window.location.reload();
     }
 
-    return <div className="border shadow-dark-teal-700 shadow-md bg-ocean-blue-950 rounded-xl p-7 backdrop-blur-xl flex flex-col gap-3 relative min-w-[300px]">
+    const handleUpdate = () => {
+        setIsMenuActive(false);
+        setCurrentProject({id, name, slug, githubRepo})
+        onUpdate();
+    }
+
+    return <div className="border shadow-dark-teal-700 shadow-md bg-ocean-blue-950 rounded-xl p-7 backdrop-blur-xl flex flex-col gap-3 relative w-[400px] h-[250px]">
         <h1 className="text-xl text-white font-medium">{name}</h1>
         <p className="text-gray-500 font-thin -mt-3">{slug}</p>
         <p className="text-gray-700 p-1 text-yellow-400">● 0 releases</p>
@@ -34,7 +45,7 @@ const Project = ({id, name, slug}: ProjectProps) => {
             &&
             <div className="absolute border w-40 right-3 top-3 flex flex-col items-center backdrop-blur-xl rounded-xl">
                 <span onClick={() => setIsMenuActive(false)} className="material-symbols-outlined ml-33 text-red-500 mb-[-5px] hover:cursor-pointer hover:text-red-700">close</span>
-                <p className={menuItemStyle + " hover:text-yellow-500"}>Update</p>
+                <p onClick={() => handleUpdate()} className={menuItemStyle + " hover:text-yellow-500"}>Update</p>
                 <p onClick={() => handleDelete()} className={menuItemStyle + " hover:text-red-600 rounded-b-xl"}>Delete</p>
             </div>
         }

@@ -94,3 +94,38 @@ export const deleteProject = async (id: number) => {
         throw error;
     }
 }
+
+export const updateProject = async (id: number, name: string, slug: string, githubRepo: string) => {
+
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch(`${API_URL}/update/${id}`, {
+        
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                name,
+                slug,
+                githubRepo
+            }),
+        });
+
+        console.log("Status:", response.status);
+        const text = await response.text(); 
+        console.log("Raw response:", text);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return JSON.parse(text);
+
+    } catch (error) {
+        console.error("Error: ", error);
+        throw error;
+    }
+}

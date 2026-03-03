@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, type PropsWithChildren} from "react";
+import Project from "../components/Project";
 
 const UserDataContext =  createContext<UserDataProviderProps | null>(null);;
 
@@ -17,10 +18,12 @@ interface UserDataProviderProps {
     firstName: string;
     lastName: string;
     email: string;
-    projects: Project[]
-    setUserInfo(firstName: string, lastName: string, email: string): void;
-    setUserProjects(userProjects: Project[]): void;
-    logout(): void;
+    projects: Project[];
+    currentProject: Project;
+    setUserInfo: (firstName: string, lastName: string, email: string)=> void;
+    setUserProjects: (userProjects: Project[]) => void;
+    setCurrentProject: (project: Project) => void;
+    logout: () => void;
 }
 
 interface Project {
@@ -35,6 +38,7 @@ const UserDataProvider = ({ children }: PropsWithChildren<UserDataProviderProps>
     const [lastName, setLastName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [projects, setProjects] = useState<Project[]>([]);
+    const [currentProject, setCurrentProject] = useState<Project>({id: -1, name: "", slug: "", githubRepo: ""});
 
     const setUserInfo = (firstName: string, lastName: string, email: string) => {
         setFirstName(firstName);
@@ -56,8 +60,10 @@ const UserDataProvider = ({ children }: PropsWithChildren<UserDataProviderProps>
         lastName,
         email,
         projects,
+        currentProject,
         setUserInfo,
         setUserProjects,
+        setCurrentProject,
         logout
     }
 
