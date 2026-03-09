@@ -17,7 +17,7 @@ const Project = ({id, name, slug, githubRepo, onUpdate}: ProjectProps) => {
 
     const [isMenuActive, setIsMenuActive] = useState<boolean>(false);
 
-    const {setCurrentProject} = useUserData();
+    const {setCurrentUserProject} = useUserData();
 
     const navigate = useNavigate();
 
@@ -30,12 +30,12 @@ const Project = ({id, name, slug, githubRepo, onUpdate}: ProjectProps) => {
 
     const handleUpdate = () => {
         setIsMenuActive(false);
-        setCurrentProject({id, name, slug, githubRepo})
+        setCurrentUserProject({id, name, slug, githubRepo})
         onUpdate();
     }
     
     const handleClick = () => {
-        setCurrentProject({id, name, slug, githubRepo})
+        setCurrentUserProject({id, name, slug, githubRepo})
         navigate("/project")
     }
 
