@@ -96,7 +96,7 @@ const Home = () => {
                                 name={project.name} 
                                 slug={project.slug}
                                 githubRepo={project.githubRepo} 
-                                onUpdate={() => handleUpdateProject}  
+                                onUpdate={() => handleUpdateProject()}  
                             />
                         ))}
                     </div>

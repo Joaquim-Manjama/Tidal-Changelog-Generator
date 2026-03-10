@@ -11,10 +11,12 @@ const SideBar = () => {
     const handleClick = (button: string) => {
         
         if (button == "dashboard") {
+            navigate("/dashboard");
             return;
         }
 
         if (button == "settings") {
+            navigate("/settings");
             return;
         }
 

@@ -17,9 +17,6 @@ const Header = ({type}: HeaderProps) => {
                 <p>{firstName} {lastName}</p>
                 <p className="font-thin text-xs mb-[-1px]">{email}</p>
             </div>
-            <div>
-                <span className="material-symbols-outlined scale-[1.2] mt-[7px] hover:text-gray-800 hover:cursor-pointer">keyboard_arrow_down</span>
-            </div>
         </div>
     }
     

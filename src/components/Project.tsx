@@ -39,7 +39,7 @@ const Project = ({id, name, slug, githubRepo, onUpdate}: ProjectProps) => {
         navigate("/project")
     }
 
-    return <div className="border shadow-dark-teal-700 shadow-md bg-ocean-blue-950 rounded-xl p-7 backdrop-blur-xl flex flex-col gap-3 relative w-[400px] h-[250px] hover:cursor-pointer hover:-translate-y-2 transition duration-200 hover:shadow-xl">
+    return <div className="bg-ocean-blue-950 rounded-xl p-7 flex flex-col gap-3 relative w-[400px] h-[250px] hover:cursor-pointer hover:-translate-y-2 transition duration-200">
         <div onClick={() => handleClick()} className="absolute top-0 left-0 w-[90%] h-[100%]"></div>
         <h1 className="text-xl text-white font-medium">{name}</h1>
         <p className="text-gray-500 font-thin -mt-3">{slug}</p>
