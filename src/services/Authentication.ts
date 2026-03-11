@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080/auth";
+import { API_URL } from "./API";
 
 export const register = async (firstName: string, lastName: string, email: string, password: string) => {
     return await authenticate(firstName, lastName, email, password, "register");
@@ -26,7 +26,7 @@ const authenticate = async (firstName: string, lastName: string, email: string, 
                 })
             });
         } else {
-            response = await fetch(`${API_URL}/${type}`, {
+            response = await fetch(`${API_URL}/auth/${type}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

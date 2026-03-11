@@ -1,11 +1,11 @@
-const API_URL = "http://localhost:8080/projects";
+import { API_URL } from "./API";
 
 export const getProjects = async () => {
 
     const token = localStorage.getItem("token");
 
     try {
-        const response = await fetch(`${API_URL}/all`, {
+        const response = await fetch(`${API_URL}/projects/all`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export const createProject = async(name: string, slug: string, githubRepo: strin
     const token = localStorage.getItem("token");
 
     try {
-        const response = await fetch(`${API_URL}/new`,
+        const response = await fetch(`${API_URL}/projects/new`,
             {
                 method: "POST",
                 headers: {
@@ -70,7 +70,7 @@ export const deleteProject = async (id: number) => {
     const token = localStorage.getItem("token");
 
     try {
-        const response = await fetch(`${API_URL}/delete/${id}`, {
+        const response = await fetch(`${API_URL}/projects/delete/${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -100,7 +100,7 @@ export const updateProject = async (id: number, name: string, slug: string, gith
     const token = localStorage.getItem("token");
 
     try {
-        const response = await fetch(`${API_URL}/update/${id}`, {
+        const response = await fetch(`${API_URL}/projects/update/${id}`, {
         
             method: "PUT",
             headers: {

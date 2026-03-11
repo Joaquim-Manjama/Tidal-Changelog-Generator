@@ -1,15 +1,19 @@
 import { useState } from "react";
+import ReleaseForm from "./ReleaseForm";
+import { useUserData } from "../contexts/UserDataContext";
 
 const NoReleases = () => {
 
     const [isFormActive, setIsFormActive] = useState<boolean>(false);
+
+    const {currentProject} = useUserData();
 
     const handleButtonClick = () => {
         setIsFormActive(true);
     }
 
     if (isFormActive) {
-        return <></>
+        return <ReleaseForm projectId={currentProject.id} onClose={() => setIsFormActive(false)}/>
     }
 
     return <div className="flex flex-col items-center text-gray-600 gap-10 transition duration-200">

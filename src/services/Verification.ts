@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080/auth";
+import { API_URL } from "./API";
 
 interface UserData {
     firstName: string;
@@ -11,7 +11,7 @@ const verificate = async (): Promise<UserData> => {
     const token = localStorage.getItem("token");
 
     try {
-        const response = await fetch(`${API_URL}/me`, {
+        const response = await fetch(`${API_URL}/auth/me`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
