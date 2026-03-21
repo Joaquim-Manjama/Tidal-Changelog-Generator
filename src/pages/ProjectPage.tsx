@@ -3,14 +3,40 @@ import Header from "../components/Header";
 import NoReleases from "../components/NoReleases";
 import SideBar from "../components/SideBar";
 import { useUserData } from "../contexts/UserDataContext";
+import { useEffect, useState } from "react";
+import { getReleases } from "../services/Releases";
+import Release from "../components/Release";
 
 const ProjectPage = () => {
 
-    const releases = [];
+    const [releases, setReleases] = useState([{id: 0, version: "", description: "", createdAt: ""}]);
 
     const {currentProject} = useUserData();
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+
+        if (!currentProject?.id) return;
+
+        const fetchReleases = async () => {
+            
+            try {
+                const response = await getReleases(currentProject.id);
+
+                if (response) {
+                    console.log(response);
+                    setReleases(response)
+                }
+
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        fetchReleases()
+
+    }, [currentProject])
 
     return <div className="relative p-4 pr-0 w-full min-h-screen flex texture">
             <SideBar/> 
@@ -24,8 +50,27 @@ const ProjectPage = () => {
                 <p className={`text-sm  w-fit rounded-3xl pl-3 pr-3 bg-dark-teal-950 mb-20 text-${currentProject.githubRepo ? "green-500": "red-500"}`}>
                     <span className={`mr-2 text-${currentProject.githubRepo ? "green-600": "red-500 font-medium"}`}>{currentProject.githubRepo ? "●": "x"}</span>{currentProject.githubRepo || "project not connected to github"}
                 </p>
-                {releases.length?
-                    <div>Releases</div>
+                {releases.length != 0?
+                    <div className="flex flex-col gap-10">
+                        <div className="flex justify-between">
+                            <h1 className="text-3xl">Releases</h1>
+                            <button className="bg-dark-teal-700 text-white p-4 pt-2 pb-2 rounded rounded-[10px] shadow-xl hover:bg-dark-teal-800 hover:cursor-pointer">
+                                +
+                            </button>
+                        </div>                      
+                        <div className="flex flex-col">
+                            {
+                                releases.map((release) => (
+                                    <Release 
+                                        id={release.id}
+                                        version={release.version}
+                                        description={release.description}
+                                        createdAt={release.createdAt.substring(0, 10)}
+                                        />
+                                ))
+                            }
+                        </div>
+                    </div>
                     :
                     <NoReleases/>
                 }

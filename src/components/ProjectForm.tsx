@@ -17,7 +17,7 @@ const ProjectForm = ({project, onClose}: ProjectFormProps) => {
     
     const inputStyle = `focus:border-dark-teal-700 focus:outline-none p-3 shadow rounded border border-white/10 mb-5 w-full -mt-4`;
 
-    const [id, setId] = useState<number>(-1);
+    const [id, setId] = useState<number>(project?.id || -1);
     const [name, setName] = useState<string>("");
     const [slug, setSlug] = useState<string>("");
     const [githubRepo, setGithubRepo] = useState<string>("");

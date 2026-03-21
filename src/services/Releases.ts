@@ -1,11 +1,11 @@
 import { API_URL } from "./API";
 
-export const getReleases = async () => {
+export const getReleases = async (projectId: number) => {
 
     const token = localStorage.getItem("token");
 
     try {
-        const response = await fetch(`${API_URL}/projects/all`, {
+        const response = await fetch(`${API_URL}/projects/${projectId}/releases/all`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
