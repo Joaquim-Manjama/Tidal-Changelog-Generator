@@ -1,8 +1,6 @@
 import { useUserData } from "../contexts/UserDataContext";
+import { type HeaderProps } from "../interfaces/props";
 
-interface HeaderProps {
-    type: "main" | "dashboard";
-}
 
 const hoverEffect = "hover:text-gray-300 hover:cursor-pointer transition duration-200 ease-in-out"
 

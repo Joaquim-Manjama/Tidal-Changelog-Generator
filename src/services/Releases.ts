@@ -1,6 +1,6 @@
 import { API_URL } from "./API";
 
-export const getReleases = async (projectId: number) => {
+export const getReleases = async (projectId: string) => {
 
     const token = localStorage.getItem("token");
 
@@ -29,7 +29,7 @@ export const getReleases = async (projectId: number) => {
     }
 }
 
-export const createRelease = async(projectId:number, version: string, description: string) => {
+export const createRelease = async(projectId:string, version: string, description: string) => {
 
     const token = localStorage.getItem("token");
 

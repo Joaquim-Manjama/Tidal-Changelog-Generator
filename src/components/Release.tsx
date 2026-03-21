@@ -1,10 +1,4 @@
-interface ReleaseProps {
-    id: number,
-    version: string,
-    description: string,
-    createdAt: string
-
-}
+import { type ReleaseProps } from "../interfaces/Props";
 
 const Release = ({id, version, description, createdAt}: ReleaseProps) => {
 

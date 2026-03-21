@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { createRelease } from "../services/Releases";
+import { type ReleaseFormProps } from "../interfaces/Props";
 
-interface ReleaseProps{
-    projectId: number;
-    onClose: () => void;
-}
 
-const ReleaseForm = ({projectId, onClose}: ReleaseProps) => {
+const ReleaseForm = ({projectId, onClose}: ReleaseFormProps) => {
     
     const inputStyle = `focus:border-dark-teal-700 focus:outline-none p-3 shadow rounded border border-white/10 mb-5 w-full -mt-4`;
 

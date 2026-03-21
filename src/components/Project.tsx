@@ -2,14 +2,8 @@ import { useState } from "react";
 import { deleteProject } from "../services/Projects";
 import { useUserData } from "../contexts/UserDataContext";
 import { useNavigate } from "react-router";
+import { type ProjectProps } from "../interfaces/props";
 
-interface ProjectProps {
-    id: number;
-    name: string;
-    slug: string;
-    githubRepo: string,
-    onUpdate: () => void;
-}
 
 const Project = ({id, name, slug, githubRepo, onUpdate}: ProjectProps) => {
 

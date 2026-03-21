@@ -13,7 +13,7 @@ const authenticate = async (firstName: string, lastName: string, email: string, 
     try {
         let response;
         if (type == "register") {
-            response = await fetch(`${API_URL}/${type}`, {
+            response = await fetch(`${API_URL}/auth/${type}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

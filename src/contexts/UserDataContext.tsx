@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState, type PropsWithChildren} from "react";
-import Project from "../components/Project";
+import { type UserDataProviderProps } from "../interfaces/props.ts";
+import { type Project } from "../interfaces/Objects";
+
 
 const UserDataContext =  createContext<UserDataProviderProps | null>(null);;
 
@@ -12,25 +14,6 @@ export const useUserData = (): UserDataProviderProps => {
     }
 
     return context;
-}
-
-interface UserDataProviderProps {
-    firstName: string;
-    lastName: string;
-    email: string;
-    projects: Project[];
-    currentProject: Project;
-    setUserInfo: (firstName: string, lastName: string, email: string)=> void;
-    setUserProjects: (userProjects: Project[]) => void;
-    setCurrentUserProject: (project: Project) => void;
-    logout: () => void;
-}
-
-interface Project {
-    id: number;
-    name: string;
-    slug: string;
-    githubRepo: string;
 }
 
 const UserDataProvider = ({ children }: PropsWithChildren<UserDataProviderProps>) => {

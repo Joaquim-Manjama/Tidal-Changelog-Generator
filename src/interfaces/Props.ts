@@ -1,0 +1,47 @@
+import { type Project } from "./Objects";
+
+export interface AuthBoxProps {
+    type: "login" | "register";
+}
+
+export interface HeaderProps {
+    type: "main" | "dashboard";
+}
+
+export interface ProjectFormProps {
+    project: Project | null
+    onClose: () => void;
+}
+
+export interface ProjectProps {
+    id: string;
+    name: string;
+    slug: string;
+    githubRepo: string,
+    onUpdate: () => void;
+}
+
+export interface ReleaseFormProps{
+    projectId: string;
+    onClose: () => void;
+}
+
+export interface ReleaseProps {
+    id: string,
+    version: string,
+    description: string,
+    createdAt: string
+
+}
+
+export interface UserDataProviderProps {
+    firstName: string;
+    lastName: string;
+    email: string;
+    projects: Project[];
+    currentProject: Project;
+    setUserInfo: (firstName: string, lastName: string, email: string)=> void;
+    setUserProjects: (userProjects: Project[]) => void;
+    setCurrentUserProject: (project: Project) => void;
+    logout: () => void;
+}

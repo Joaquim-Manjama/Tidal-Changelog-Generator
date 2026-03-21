@@ -65,7 +65,7 @@ export const createProject = async(name: string, slug: string, githubRepo: strin
     }
 }
 
-export const deleteProject = async (id: number) => {
+export const deleteProject = async (id: string) => {
 
     const token = localStorage.getItem("token");
 
@@ -95,7 +95,7 @@ export const deleteProject = async (id: number) => {
     }
 }
 
-export const updateProject = async (id: number, name: string, slug: string, githubRepo: string) => {
+export const updateProject = async (id: string, name: string, slug: string, githubRepo: string) => {
 
     const token = localStorage.getItem("token");
 

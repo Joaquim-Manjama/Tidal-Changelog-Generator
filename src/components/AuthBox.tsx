@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { login, register } from "../services/Authentication.ts";
+import { type AuthBoxProps } from "../interfaces/Props.ts";
 
-interface AuthBoxProps {
-    type: "login" | "register";
-}
+
 
 const inputStyle = `p-3 shadow rounded border border-white/10 mb-5 w-full`;
 

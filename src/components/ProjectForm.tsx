@@ -1,29 +1,18 @@
 import { useEffect, useState } from "react";
 import { createProject, updateProject } from "../services/Projects";
-
-interface ProjectFormProps {
-    project: Project | null
-    onClose: () => void;
-}
-
-interface Project {
-    id: number;
-    name: string;
-    slug: string;
-    githubRepo: string;
-}
+import { type ProjectFormProps } from "../interfaces/props";
 
 const ProjectForm = ({project, onClose}: ProjectFormProps) => {
     
     const inputStyle = `focus:border-dark-teal-700 focus:outline-none p-3 shadow rounded border border-white/10 mb-5 w-full -mt-4`;
 
-    const [id, setId] = useState<number>(project?.id || -1);
+    const [id, setId] = useState<string>(project?.id || "");
     const [name, setName] = useState<string>("");
     const [slug, setSlug] = useState<string>("");
     const [githubRepo, setGithubRepo] = useState<string>("");
 
     const reset = () => {
-        setId(-1);
+        setId("");
         setName("");
         setSlug("");
         setGithubRepo("")
@@ -64,7 +53,7 @@ const ProjectForm = ({project, onClose}: ProjectFormProps) => {
     useEffect(() => {
 
         const setValues = () => {
-            setId(project?.id || -1);
+            setId(project?.id || "");
             setName(project?.name || "");
             setSlug(project?.slug || "");
             setGithubRepo(project?.githubRepo || "");
