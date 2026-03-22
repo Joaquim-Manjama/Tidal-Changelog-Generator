@@ -64,3 +64,75 @@ export const createRelease = async(projectId:string, version: string, descriptio
         throw err;
     }
 }
+
+export const updateRelease = async (projectId: string, version: string, description: string) => {
+    
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch(`${API_URL}/projects/releases/update`, 
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    projectId,
+                    version,
+                    description
+                })
+            }
+        ) 
+
+        console.log("Status:", response.status);
+        const text = await response.text(); 
+        console.log("Raw response:", text);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return JSON.parse(text);
+
+
+    } catch (error) {
+        console.error("Error: ", error);
+        throw error;
+    }
+
+}
+
+export const toggleReleaseStatus = async (releaseId: string) => {
+    
+    const token = localStorage.getItem("token");
+    console.log("Trying to send toggle  request!");
+
+    try {
+        const response = await fetch(`${API_URL}/projects/release/publish/${releaseId}`, 
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+            }
+        ) 
+        console.log("Toggle request sent!");
+        console.log("Status:", response.status);
+        const text = await response.text(); 
+        console.log("Raw response:", text);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return JSON.parse(text);
+
+
+    } catch (error) {
+        console.error("Error: ", error);
+        throw error;
+    }
+
+}

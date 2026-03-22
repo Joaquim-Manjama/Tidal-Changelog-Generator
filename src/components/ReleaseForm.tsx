@@ -1,19 +1,19 @@
 import { useState } from "react";
-import { createRelease } from "../services/Releases";
-import { type ReleaseFormProps } from "../interfaces/Props";
+import { createRelease, updateRelease } from "../services/Releases";
+import { type ReleaseFormProps } from "../interfaces/props";
 
 
-const ReleaseForm = ({projectId, onClose}: ReleaseFormProps) => {
+const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProps) => {
     
     const inputStyle = `focus:border-dark-teal-700 focus:outline-none p-3 shadow rounded border border-white/10 mb-5 w-full -mt-4`;
 
-    const [version, setVersion] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
+    const [versionInput, setVersion] = useState<string>(version);
+    const [descriptionInput, setDescription] = useState<string>(description);
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const response = await createRelease(projectId, version, description);
+        const response = (version == "" && description == "") ? await createRelease(projectId, versionInput, descriptionInput): await updateRelease(projectId, versionInput, descriptionInput);
         console.log(response);
         onClose();
         window.location.reload();
@@ -24,10 +24,10 @@ const ReleaseForm = ({projectId, onClose}: ReleaseFormProps) => {
                 <span onClick={() => onClose()} className="material-symbols-outlined right-10 scale-[1.2] absolute hover:cursor-pointer hover:text-red-500">close</span>
                 <h1 className="text-2xl w-full text-center">New Release</h1>
                 <label htmlFor="">Version Name*</label>
-                <input type="text" value={version} onChange={(e) => setVersion(e.target.value)} className={inputStyle} placeholder="v1.0.0" required/>
+                <input type="text" value={versionInput} onChange={(e) => setVersion(e.target.value)} className={inputStyle} placeholder="v1.0.0" required/>
                 <label htmlFor="">Description*</label>
-                <textarea value={description} onChange={(e) => setDescription(e.target.value)} className={inputStyle} placeholder="Big Performance Update!" required></textarea>
-                <button type="submit" className="bg-dark-teal-700 p-4 rounded-lg shadow-xl text-white hover:cursor-pointer hover:bg-dark-teal-800">Create Draft</button>
+                <textarea value={descriptionInput} onChange={(e) => setDescription(e.target.value)} className={inputStyle} placeholder="Big Performance Update!" required></textarea>
+                <button type="submit" className="bg-dark-teal-700 p-4 rounded-lg shadow-xl text-white hover:cursor-pointer hover:bg-dark-teal-800">{`${(version == "" && description == "") ? "+ Create": "Update"} Draft`}</button>
             </form>
         </div>  
 }

@@ -23,6 +23,8 @@ export interface ProjectProps {
 
 export interface ReleaseFormProps{
     projectId: string;
+    version: string,
+    description: string
     onClose: () => void;
 }
 
@@ -30,8 +32,9 @@ export interface ReleaseProps {
     id: string,
     version: string,
     description: string,
-    createdAt: string
-
+    createdAt: string,
+    status: string,
+    onEdit: (id: string, version: string, description: string) => void;
 }
 
 export interface UserDataProviderProps {

@@ -6,14 +6,29 @@ import { useUserData } from "../contexts/UserDataContext";
 import { useEffect, useState } from "react";
 import { getReleases } from "../services/Releases";
 import Release from "../components/Release";
+import ReleaseForm from "../components/ReleaseForm";
+import type { ReleaseObj } from "../interfaces/Objects";
 
 const ProjectPage = () => {
 
-    const [releases, setReleases] = useState([{id: 0, version: "", description: "", createdAt: ""}]);
+    const [releases, setReleases] = useState<ReleaseObj[]>([]);
+    const [formActive, setFormActive] = useState(false);
+    const [currentRelease, setCurrentRelease] = useState<{id: string, version: string, description: string} | null>(null);
 
     const {currentProject} = useUserData();
 
     const navigate = useNavigate();
+
+    const handleCloseForm = () => {
+        setFormActive(false);
+        setCurrentRelease(null);
+        window.location.reload();
+    }
+
+    const handleEditRelease = (id: string, version: string, description: string) => {
+        setCurrentRelease({id, version, description})
+        setFormActive(true);
+    }
 
     useEffect(() => {
 
@@ -54,11 +69,11 @@ const ProjectPage = () => {
                     <div className="flex flex-col gap-10">
                         <div className="flex justify-between">
                             <h1 className="text-3xl">Releases</h1>
-                            <button className="bg-dark-teal-700 text-white p-4 pt-2 pb-2 rounded rounded-[10px] shadow-xl hover:bg-dark-teal-800 hover:cursor-pointer">
+                            <button onClick={() => setFormActive(true)} className="bg-dark-teal-700 text-white p-4 pt-2 pb-2 rounded rounded-[10px] shadow-xl hover:bg-dark-teal-800 hover:cursor-pointer">
                                 +
                             </button>
                         </div>                      
-                        <div className="flex flex-col">
+                        <div className="flex flex-col gap-10">
                             {
                                 releases.map((release) => (
                                     <Release 
@@ -66,6 +81,8 @@ const ProjectPage = () => {
                                         version={release.version}
                                         description={release.description}
                                         createdAt={release.createdAt.substring(0, 10)}
+                                        status={release.status}
+                                        onEdit={handleEditRelease}
                                         />
                                 ))
                             }
@@ -75,6 +92,11 @@ const ProjectPage = () => {
                     <NoReleases/>
                 }
             </div>
+            {
+                formActive 
+                    && 
+                <ReleaseForm projectId={currentRelease?.id || ""} version={currentRelease?.version || ""} description={currentRelease?.description || ""} onClose={() => handleCloseForm()}/>
+            }
         </div>
 }
 
