@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createProject, updateProject } from "../services/Projects";
-import { type ProjectFormProps } from "../interfaces/props";
+import type { ProjectFormProps } from "../interfaces/Props";
 
 const ProjectForm = ({project, onClose}: ProjectFormProps) => {
     

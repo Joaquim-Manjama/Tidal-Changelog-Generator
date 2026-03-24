@@ -22,7 +22,6 @@ const ProjectPage = () => {
     const handleCloseForm = () => {
         setFormActive(false);
         setCurrentRelease(null);
-        window.location.reload();
     }
 
     const handleEditRelease = (id: string, version: string, description: string) => {

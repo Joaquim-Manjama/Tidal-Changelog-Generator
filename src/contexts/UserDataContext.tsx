@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, type PropsWithChildren} from "react";
-import { type UserDataProviderProps } from "../interfaces/props.ts";
-import { type Project } from "../interfaces/Objects";
+import type { UserDataProviderProps } from "../interfaces/Props";
+import type { Project, ReleaseObj } from "../interfaces/Objects";
 
 
 const UserDataContext =  createContext<UserDataProviderProps | null>(null);;
@@ -21,7 +21,8 @@ const UserDataProvider = ({ children }: PropsWithChildren<UserDataProviderProps>
     const [lastName, setLastName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [projects, setProjects] = useState<Project[]>([]);
-    const [currentProject, setCurrentProject] = useState<Project>({id: -1, name: "", slug: "", githubRepo: ""});
+    const [currentProject, setCurrentProject] = useState<Project>({id: "", name: "", slug: "", githubRepo: ""});
+    const [currentRelease, setCurrentRelease] = useState<ReleaseObj>({id: "", version: "", description: "", createdAt: "", status: ""});
 
     const setUserInfo = (firstName: string, lastName: string, email: string) => {
         setFirstName(firstName);
@@ -46,15 +47,22 @@ const UserDataProvider = ({ children }: PropsWithChildren<UserDataProviderProps>
         localStorage.removeItem("token");
     }
 
+    const setCurrentProjectRelease = (release: ReleaseObj) => {
+        setCurrentRelease(release);
+        sessionStorage.setItem("currentProjectRelease", JSON.stringify(release));
+    }
+
     const values: UserDataProviderProps = {
         firstName,
         lastName,
         email,
         projects,
         currentProject,
+        currentRelease,
         setUserInfo,
         setUserProjects,
         setCurrentUserProject,
+        setCurrentProjectRelease,
         logout
     }
 
@@ -67,6 +75,9 @@ const UserDataProvider = ({ children }: PropsWithChildren<UserDataProviderProps>
             
             const currentUserProject = JSON.parse(sessionStorage.getItem("currentUserProject") || "");
             setCurrentProject(currentUserProject);
+
+            const currentProjectRelease = JSON.parse(sessionStorage.getItem("currentProjectRelease") || "");
+            setCurrentProject(currentProjectRelease);
         }
 
 
@@ -77,7 +88,7 @@ const UserDataProvider = ({ children }: PropsWithChildren<UserDataProviderProps>
         } catch (error) {
             console.log(error)
         }
-    }, [])
+    }, [currentRelease])
 
     return (
         <UserDataContext.Provider value={values}>

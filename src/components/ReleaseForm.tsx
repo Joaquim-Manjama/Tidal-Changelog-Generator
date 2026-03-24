@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createRelease, updateRelease } from "../services/Releases";
-import { type ReleaseFormProps } from "../interfaces/props";
+import type { ReleaseFormProps } from "../interfaces/Props";
 
 
 const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProps) => {

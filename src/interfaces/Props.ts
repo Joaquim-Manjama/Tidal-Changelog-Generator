@@ -1,4 +1,4 @@
-import { type Project } from "./Objects";
+import { type Project, type ReleaseObj } from "./Objects";
 
 export interface AuthBoxProps {
     type: "login" | "register";
@@ -9,7 +9,7 @@ export interface HeaderProps {
 }
 
 export interface ProjectFormProps {
-    project: Project | null
+    project: Project
     onClose: () => void;
 }
 
@@ -43,8 +43,10 @@ export interface UserDataProviderProps {
     email: string;
     projects: Project[];
     currentProject: Project;
+    currentRelease: ReleaseObj;
     setUserInfo: (firstName: string, lastName: string, email: string)=> void;
     setUserProjects: (userProjects: Project[]) => void;
     setCurrentUserProject: (project: Project) => void;
+    setCurrentProjectRelease: (release: ReleaseObj) => void;
     logout: () => void;
 }

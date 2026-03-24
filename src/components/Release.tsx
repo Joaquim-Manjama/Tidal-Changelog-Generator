@@ -1,8 +1,13 @@
-import { type ReleaseProps } from "../interfaces/props";
+import { useNavigate } from "react-router";
+import { useUserData } from "../contexts/UserDataContext";
+import type { ReleaseProps } from "../interfaces/Props";
 import { toggleReleaseStatus } from "../services/Releases";
 
 const Release = ({id, version, description, createdAt, status, onEdit}: ReleaseProps) => {
     
+    const {setCurrentProjectRelease} = useUserData();
+    const navigate = useNavigate();
+
     const handleEdit = () => {
         onEdit(id, version, description);
     }
@@ -12,7 +17,14 @@ const Release = ({id, version, description, createdAt, status, onEdit}: ReleaseP
         window.location.reload()
     }
 
-    return <div className="shadow-xl relative rounded bg-gray-300 flex flex-col p-4 gap-5 w-[500px] m-auto transition duration-200 hover:cursor-pointer hover:-translate-y-3 hover:shadow-2xl">
+    const handleClick = () => {
+        if (setCurrentProjectRelease) {
+            setCurrentProjectRelease({id, version, description, createdAt, status});
+            navigate("release")
+        }
+    }
+
+    return <div onClick={() => handleClick()} className="shadow-xl relative rounded bg-gray-300 flex flex-col p-4 gap-5 w-[500px] m-auto transition duration-200 hover:cursor-pointer hover:-translate-y-3 hover:shadow-2xl">
         <div className="flex justify-between">
             <p>{version}</p>
             <p>{createdAt}</p>
