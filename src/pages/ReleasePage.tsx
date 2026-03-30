@@ -1,9 +1,17 @@
+import { useEffect, useState } from "react";
+import CategoryBox from "../components/CategoryBox";
 import SideBar from "../components/SideBar";
 import { useUserData } from "../contexts/UserDataContext";
-import type { ReleaseObj } from "../interfaces/Objects";
+import type { ReleaseObj, Entry } from "../interfaces/Objects";
 import { NavLink } from "react-router";
 
 const ReleasePage = () => {
+
+    const [features, setFeatures] = useState<Entry[]>([]);
+    const [fixes, setFixes] = useState<Entry[]>([]);
+    const [improvements, setImprovements] = useState<Entry[]>([]);
+    const [currentCategory, setCurrentCategory] = useState<string>("");
+    const [isformActive, setIsFormActive] = useState<boolean>(false);
 
     const {currentRelease, setCurrentProjectRelease} = useUserData();
 
@@ -11,6 +19,15 @@ const ReleasePage = () => {
         const newRelease: ReleaseObj = valueChanged == "version" ? {...currentRelease, version: newValue}: {...currentRelease, description: newValue} ;
         setCurrentProjectRelease(newRelease);
     }
+
+    const handleAddEntry = (category: string) => {
+        setCurrentCategory(category);
+        setIsFormActive(true);
+    }
+
+    useEffect(() => {
+    
+    });
 
     return <div className="relative w-full min-h-screen flex">
         <SideBar/>
@@ -30,7 +47,7 @@ const ReleasePage = () => {
             </div>
 
             {/*Release Information */}
-            <div className="mt-30 p-4 border border-white/2 flex flex-col rounded bg-white/2 backdrop-blur-xl gap-5">
+            <div className="mt-30 p-4 border border-white/2 flex flex-col rounded bg-white/2 backdrop-blur-xl gap-5 mb-10 shadow-xl">
                 <div className="flex justify-between">
                     <span>Version: <input onChange={(e) => handleChange("version", e.target.value)} className="border w-20 pl-2 rounded border-gray-500" type="text" value={currentRelease?.version} /></span>
                     <p>Date Created: {currentRelease?.createdAt}</p>
@@ -44,7 +61,15 @@ const ReleasePage = () => {
             </div>
 
             {/*Changelog Entries*/}
+            {/* NEW FEATURES */}
+            <CategoryBox categoryType="NEW_FEATURE" onAddEntry={handleAddEntry} />
+            {/* BUG FIXES */}
+            <CategoryBox categoryType="BUG_FIX" onAddEntry={handleAddEntry} />
+            {/* IMPROVEMENTS */}
+            <CategoryBox categoryType="IMPROVEMENT" onAddEntry={handleAddEntry} />
         </div>
+
+        {isformActive && <div>Form is Active</div>}
     </div>
 }
 

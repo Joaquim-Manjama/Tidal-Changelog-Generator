@@ -1,7 +1,13 @@
-import { type Project, type ReleaseObj } from "./Objects";
+import type { Entry, Project, ReleaseObj } from "./Objects";
 
 export interface AuthBoxProps {
     type: "login" | "register";
+}
+
+export interface CategoryBoxProps {
+    categoryType: "NEW_FEATURE" | "BUG_FIX" | "IMPROVEMENT";
+    entries?: Entry[];
+    onAddEntry: (category: string) => void;
 }
 
 export interface HeaderProps {
