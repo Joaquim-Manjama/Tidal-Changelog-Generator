@@ -8,7 +8,7 @@ import { getProjects } from '../services/Projects.ts';
 import NoProjects from '../components/NoProjects.tsx';
 import '../index.css'
 import Project from '../components/Project.tsx';
-import CreateProjectForm from '../components/ProjectForm.tsx';
+import ProjectForm from '../components/ProjectForm.tsx';
 
 const Home = () => {
     const { firstName, projects, setUserInfo, setUserProjects} = useUserData();
@@ -103,7 +103,7 @@ const Home = () => {
                 </>
             }
         </div>
-        {isFormActive && <CreateProjectForm project={isUpdating ? currentProject: null} onClose={() => setIsFormActive(false)}/>}
+        {isFormActive && <ProjectForm project={isUpdating ? currentProject: null} onClose={() => setIsFormActive(false)}/>}
     </div>
 }
 
