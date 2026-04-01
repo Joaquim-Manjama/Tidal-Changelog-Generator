@@ -7,7 +7,7 @@ export interface AuthBoxProps {
 export interface CategoryBoxProps {
     categoryType: "NEW_FEATURE" | "BUG_FIX" | "IMPROVEMENT";
     entries?: Entry[];
-    onAddEntry: (category: string) => void;
+    onAddEntry: (category: string, displayOrder: number) => void;
 }
 
 export interface HeaderProps {
@@ -51,10 +51,14 @@ export interface UserDataProviderProps {
     currentProject: Project;
     releases: ReleaseObj[];
     currentRelease: ReleaseObj;
+    currentCategory: string;
+    currentDisplayOrder: number;
     setUserInfo: (firstName: string, lastName: string, email: string)=> void;
     setUserProjects: (userProjects: Project[]) => void;
     setCurrentUserProject: (project: Project) => void;
     setCurrentProjectRelease: (release: ReleaseObj) => void;
     setUserProjectReleases: (releases: ReleaseObj[]) => void;
+    setCurrentEntryCategory: (category: string) => void;
+    setCurrentEntryDisplayOrder: (displayOrder: number) => void;
     logout: () => void;
 }

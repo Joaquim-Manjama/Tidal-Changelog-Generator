@@ -17,14 +17,17 @@ const Release = ({id, version, description, createdAt, status, onEdit}: ReleaseP
         window.location.reload()
     }
 
-    const handleClick = () => {
+    const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+
+        if (e.target.tagName == "BUTTON") return;
+
         if (setCurrentProjectRelease) {
             setCurrentProjectRelease({id, version, description, createdAt, status});
             navigate("release")
         }
     }
 
-    return <div onClick={() => handleClick()} className="shadow-xl relative rounded bg-gray-300 flex flex-col p-4 gap-5 w-[500px] m-auto transition duration-200 hover:cursor-pointer hover:-translate-y-3 hover:shadow-2xl">
+    return <div onClick={(e) => handleClick(e)} className="shadow-xl relative rounded bg-gray-300 flex flex-col p-4 gap-5 w-[500px] m-auto transition duration-200 hover:cursor-pointer hover:-translate-y-3 hover:shadow-2xl">
         <div className="flex justify-between">
             <p>{version}</p>
             <p>{createdAt}</p>

@@ -41,6 +41,16 @@ const UserDataProvider = ({ children }: PropsWithChildren<UserDataProviderProps>
         return storedCurrentRelease ? JSON.parse(storedCurrentRelease) : {id: "", version: "", description: "", createdAt: "", status: ""};
     });
 
+    const [currentCategory, setCurrentCategory] = useState<string>(() => {
+        const storedCurrentCategory = sessionStorage.getItem("currentEntryCategory");
+        return storedCurrentCategory ? JSON.parse(storedCurrentCategory) : "";
+    });
+
+    const [currentDisplayOrder, setCurrentDisplayOrder] = useState<number>(() => {
+        const storedCurrentDisplayOrder = sessionStorage.getItem("currentEntryDisplayOrder");
+        return storedCurrentDisplayOrder ? JSON.parse(storedCurrentDisplayOrder) : 0;
+    });
+
     const setUserInfo = (firstName: string, lastName: string, email: string) => {
         setFirstName(firstName);
         setLastName(lastName);
@@ -75,6 +85,16 @@ const UserDataProvider = ({ children }: PropsWithChildren<UserDataProviderProps>
         setReleases(releases);
     }
 
+    const setCurrentEntryCategory = (category: string) => {
+        sessionStorage.setItem("currentEntryCategory", JSON.stringify(category));
+        setCurrentCategory(category);
+    }
+
+    const setCurrentEntryDisplayOrder = (displayOrder: number) => {
+        sessionStorage.setItem("currentEntryDisplayOrder", JSON.stringify(displayOrder));
+        setCurrentDisplayOrder(displayOrder);
+    }
+
     const values: UserDataProviderProps = {
         firstName,
         lastName,
@@ -83,12 +103,16 @@ const UserDataProvider = ({ children }: PropsWithChildren<UserDataProviderProps>
         currentProject,
         releases,
         currentRelease,
+        currentCategory,
+        currentDisplayOrder,
         setUserInfo,
         setUserProjects,
         setCurrentUserProject,
         setCurrentProjectRelease,
         setUserProjectReleases,
-        logout
+        setCurrentEntryCategory,
+        setCurrentEntryDisplayOrder,
+        logout,
     }
 
     useEffect(() => {

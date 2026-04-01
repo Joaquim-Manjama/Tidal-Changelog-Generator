@@ -4,30 +4,55 @@ import SideBar from "../components/SideBar";
 import { useUserData } from "../contexts/UserDataContext";
 import type { ReleaseObj, Entry } from "../interfaces/Objects";
 import { NavLink } from "react-router";
+import { getAllEntries } from "../services/ChangelogEntry";
+import CategoryForm from "../components/CategoryForm";
 
 const ReleasePage = () => {
 
     const [features, setFeatures] = useState<Entry[]>([]);
     const [fixes, setFixes] = useState<Entry[]>([]);
     const [improvements, setImprovements] = useState<Entry[]>([]);
-    const [currentCategory, setCurrentCategory] = useState<string>("");
     const [isformActive, setIsFormActive] = useState<boolean>(false);
-
     const {currentRelease, setCurrentProjectRelease} = useUserData();
+
+    const {setCurrentEntryCategory, setCurrentEntryDisplayOrder} = useUserData();
 
     const handleChange = (valueChanged: string, newValue: string) => {
         const newRelease: ReleaseObj = valueChanged == "version" ? {...currentRelease, version: newValue}: {...currentRelease, description: newValue} ;
         setCurrentProjectRelease(newRelease);
     }
 
-    const handleAddEntry = (category: string) => {
-        setCurrentCategory(category);
+    const handleAddEntry = (categoryType: string, displayOrder: number) => {
+        setCurrentEntryCategory(categoryType);
+        setCurrentEntryDisplayOrder(displayOrder);
         setIsFormActive(true);
     }
 
+    const handleCloseForm = () => {
+        setIsFormActive(false);
+        window.location.reload();
+    }
+
     useEffect(() => {
-    
-    });
+         
+        const setEntries = async () => {
+            if(!currentRelease) return;
+
+            const data = await getAllEntries(currentRelease.id);
+
+            if (!data) return;
+
+            const features = data.filter((entry: Entry) => entry.category == "NEW_FEATURE");
+            const fixes = data.filter((entry: Entry) => entry.category == "BUG_FIX");
+            const improvements = data.filter((entry: Entry) => entry.category == "IMPROVEMENT");
+
+            setFeatures(features.sort((a: Entry, b: Entry) => a.displayOrder - b.displayOrder));
+            setFixes(fixes.sort((a: Entry, b: Entry) => a.displayOrder - b.displayOrder));
+            setImprovements(improvements.sort((a: Entry, b: Entry) => a.displayOrder - b.displayOrder));
+        }
+
+        setEntries();
+    }, []);
 
     return <div className="relative w-full min-h-screen flex">
         <SideBar/>
@@ -62,14 +87,14 @@ const ReleasePage = () => {
 
             {/*Changelog Entries*/}
             {/* NEW FEATURES */}
-            <CategoryBox categoryType="NEW_FEATURE" onAddEntry={handleAddEntry} />
+            <CategoryBox categoryType="NEW_FEATURE" onAddEntry={handleAddEntry} entries={features}/>
             {/* BUG FIXES */}
-            <CategoryBox categoryType="BUG_FIX" onAddEntry={handleAddEntry} />
+            <CategoryBox categoryType="BUG_FIX" onAddEntry={handleAddEntry} entries={fixes}/>
             {/* IMPROVEMENTS */}
-            <CategoryBox categoryType="IMPROVEMENT" onAddEntry={handleAddEntry} />
+            <CategoryBox categoryType="IMPROVEMENT" onAddEntry={handleAddEntry} entries={improvements}/>
         </div>
 
-        {isformActive && <div>Form is Active</div>}
+        {isformActive && <CategoryForm onClose={handleCloseForm} />}
     </div>
 }
 
