@@ -2,7 +2,7 @@ import { useState } from "react";
 import { deleteProject } from "../services/Projects";
 import { useUserData } from "../contexts/UserDataContext";
 import { useNavigate } from "react-router";
-import { type ProjectProps } from "../interfaces/props";
+import { type ProjectProps } from "../interfaces/Props";
 
 
 const Project = ({id, name, slug, githubRepo, onUpdate}: ProjectProps) => {

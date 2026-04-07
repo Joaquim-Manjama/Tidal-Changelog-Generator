@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, type PropsWithChildren} from "react";
-import { type UserDataProviderProps } from "../interfaces/props.ts";
-import { type Project } from "../interfaces/Objects";
+import type { UserDataProviderProps } from "../interfaces/Props";
+import type { Project, ReleaseObj } from "../interfaces/Objects";
 
 
 const UserDataContext =  createContext<UserDataProviderProps | null>(null);;
@@ -20,8 +20,36 @@ const UserDataProvider = ({ children }: PropsWithChildren<UserDataProviderProps>
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
-    const [projects, setProjects] = useState<Project[]>([]);
-    const [currentProject, setCurrentProject] = useState<Project>({id: -1, name: "", slug: "", githubRepo: ""});
+    
+    const [projects, setProjects] = useState<Project[]>(() => {
+        const storedProjects = sessionStorage.getItem("userProjects");
+        return storedProjects ? JSON.parse(storedProjects) : [];
+    });
+    
+    const [currentProject, setCurrentProject] = useState<Project>(() => {
+        const storedCurrentProject = sessionStorage.getItem("currentUserProject");
+        return storedCurrentProject ? JSON.parse(storedCurrentProject) : {id: "", name: "", slug: "", githubRepo: ""};
+    });
+    
+    const [releases, setReleases] = useState<ReleaseObj[]>(() => {
+        const storedReleases = sessionStorage.getItem("UserProjectReleases");
+        return storedReleases ? JSON.parse(storedReleases) : [];
+    })
+    
+    const [currentRelease, setCurrentRelease] = useState<ReleaseObj>(() => {
+        const storedCurrentRelease = sessionStorage.getItem("currentProjectRelease");
+        return storedCurrentRelease ? JSON.parse(storedCurrentRelease) : {id: "", version: "", description: "", createdAt: "", status: ""};
+    });
+
+    const [currentCategory, setCurrentCategory] = useState<string>(() => {
+        const storedCurrentCategory = sessionStorage.getItem("currentEntryCategory");
+        return storedCurrentCategory ? JSON.parse(storedCurrentCategory) : "";
+    });
+
+    const [currentDisplayOrder, setCurrentDisplayOrder] = useState<number>(() => {
+        const storedCurrentDisplayOrder = sessionStorage.getItem("currentEntryDisplayOrder");
+        return storedCurrentDisplayOrder ? JSON.parse(storedCurrentDisplayOrder) : 0;
+    });
 
     const setUserInfo = (firstName: string, lastName: string, email: string) => {
         setFirstName(firstName);
@@ -33,17 +61,38 @@ const UserDataProvider = ({ children }: PropsWithChildren<UserDataProviderProps>
     }
 
     const setUserProjects = (userProjects: Project[]) => {
+        sessionStorage.setItem("userProjects", JSON.stringify(userProjects));
         setProjects(userProjects);
     }
 
     const setCurrentUserProject = (project: Project) => {
-        setCurrentProject(project);
         sessionStorage.setItem("currentUserProject", JSON.stringify(project));
+        setCurrentProject(project);
     }
 
     const logout = () => {
         setUserInfo("", "", "");
         localStorage.removeItem("token");
+    }
+
+    const setCurrentProjectRelease = (release: ReleaseObj) => {
+        sessionStorage.setItem("currentProjectRelease", JSON.stringify(release));
+        setCurrentRelease(release);
+    }
+
+    const setUserProjectReleases = (releases: ReleaseObj[]) => {
+        sessionStorage.setItem("UserProjectReleases", JSON.stringify(releases));
+        setReleases(releases);
+    }
+
+    const setCurrentEntryCategory = (category: string) => {
+        sessionStorage.setItem("currentEntryCategory", JSON.stringify(category));
+        setCurrentCategory(category);
+    }
+
+    const setCurrentEntryDisplayOrder = (displayOrder: number) => {
+        sessionStorage.setItem("currentEntryDisplayOrder", JSON.stringify(displayOrder));
+        setCurrentDisplayOrder(displayOrder);
     }
 
     const values: UserDataProviderProps = {
@@ -52,10 +101,18 @@ const UserDataProvider = ({ children }: PropsWithChildren<UserDataProviderProps>
         email,
         projects,
         currentProject,
+        releases,
+        currentRelease,
+        currentCategory,
+        currentDisplayOrder,
         setUserInfo,
         setUserProjects,
         setCurrentUserProject,
-        logout
+        setCurrentProjectRelease,
+        setUserProjectReleases,
+        setCurrentEntryCategory,
+        setCurrentEntryDisplayOrder,
+        logout,
     }
 
     useEffect(() => {
@@ -64,11 +121,7 @@ const UserDataProvider = ({ children }: PropsWithChildren<UserDataProviderProps>
 
             const userInfo = JSON.parse(sessionStorage.getItem("userInfo") || "");
             setUserInfo(userInfo?.firstName, userInfo?.lastName, userInfo?.email);
-            
-            const currentUserProject = JSON.parse(sessionStorage.getItem("currentUserProject") || "");
-            setCurrentProject(currentUserProject);
         }
-
 
         try {
 

@@ -1,7 +1,15 @@
-import { type Project } from "./Objects";
+import type { Entry, Project, ReleaseObj } from "./Objects";
 
 export interface AuthBoxProps {
     type: "login" | "register";
+}
+
+export interface CategoryBoxProps {
+    categoryType: "NEW_FEATURE" | "BUG_FIX" | "IMPROVEMENT";
+    entries?: Entry[];
+    onAddEntry: (category: string, displayOrder: number) => void;
+    onReorder?: (entries: Entry[]) => void;
+    onUpdateEntry?: (entryId: string, newDescription: string) => void;
 }
 
 export interface HeaderProps {
@@ -9,7 +17,7 @@ export interface HeaderProps {
 }
 
 export interface ProjectFormProps {
-    project: Project | null
+    project: Project | null;
     onClose: () => void;
 }
 
@@ -43,8 +51,16 @@ export interface UserDataProviderProps {
     email: string;
     projects: Project[];
     currentProject: Project;
+    releases: ReleaseObj[];
+    currentRelease: ReleaseObj;
+    currentCategory: string;
+    currentDisplayOrder: number;
     setUserInfo: (firstName: string, lastName: string, email: string)=> void;
     setUserProjects: (userProjects: Project[]) => void;
     setCurrentUserProject: (project: Project) => void;
+    setCurrentProjectRelease: (release: ReleaseObj) => void;
+    setUserProjectReleases: (releases: ReleaseObj[]) => void;
+    setCurrentEntryCategory: (category: string) => void;
+    setCurrentEntryDisplayOrder: (displayOrder: number) => void;
     logout: () => void;
 }

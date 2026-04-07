@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import Header from "../components/Header";
 import NoReleases from "../components/NoReleases";
 import SideBar from "../components/SideBar";
@@ -7,22 +7,19 @@ import { useEffect, useState } from "react";
 import { getReleases } from "../services/Releases";
 import Release from "../components/Release";
 import ReleaseForm from "../components/ReleaseForm";
-import type { ReleaseObj } from "../interfaces/Objects";
 
 const ProjectPage = () => {
 
-    const [releases, setReleases] = useState<ReleaseObj[]>([]);
     const [formActive, setFormActive] = useState(false);
     const [currentRelease, setCurrentRelease] = useState<{id: string, version: string, description: string} | null>(null);
 
-    const {currentProject} = useUserData();
+    const {currentProject, releases, setUserProjectReleases} = useUserData();
 
     const navigate = useNavigate();
 
     const handleCloseForm = () => {
         setFormActive(false);
         setCurrentRelease(null);
-        window.location.reload();
     }
 
     const handleEditRelease = (id: string, version: string, description: string) => {
@@ -41,20 +38,24 @@ const ProjectPage = () => {
 
                 if (response) {
                     console.log(response);
-                    setReleases(response)
+                    setUserProjectReleases(response)
                 }
 
             } catch (error) {
                 console.error(error);
             }
+            
         }
 
         fetchReleases()
 
-    }, [currentProject])
+    }, [])
 
     return <div className="relative p-4 pr-0 w-full min-h-screen flex texture">
             <SideBar/> 
+            <NavLink to="/dashboard" className={"absolute top-[19px] left-[220px] bg-black p-4 pt-2 pb-1 rounded-xl bg-transparent scale-[1.5] font-normal hover:text-gray-300 hover:cursor-pointer transition duration-200 ease-in-out text-gray-700"}>
+                    <span className="material-symbols-outlined">keyboard_double_arrow_left</span>
+            </NavLink>
             <div className='ml-[220px] p-5 mt-[-16px] text-black overflow-y-auto max-h-screen flex-1'>
                 <Header type="dashboard"/>
                 <span className="flex justify-between">
@@ -77,6 +78,7 @@ const ProjectPage = () => {
                             {
                                 releases.map((release) => (
                                     <Release 
+                                        key={release.id}
                                         id={release.id}
                                         version={release.version}
                                         description={release.description}

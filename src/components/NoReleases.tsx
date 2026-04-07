@@ -13,7 +13,7 @@ const NoReleases = () => {
     }
 
     if (isFormActive) {
-        return <ReleaseForm projectId={currentProject.id} onClose={() => setIsFormActive(false)}/>
+        return <ReleaseForm projectId={currentProject.id} version="" description="" onClose={() => setIsFormActive(false)}/>
     }
 
     return <div className="flex flex-col items-center text-gray-600 gap-10 transition duration-200">

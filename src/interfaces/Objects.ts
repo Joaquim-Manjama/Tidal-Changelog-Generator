@@ -5,6 +5,13 @@ export interface Project {
     githubRepo: string;
 }
 
+export interface Entry {
+    id: string;
+    description: string;
+    displayOrder: number;
+    category: "NEW_FEATURE" | "BUG_FIX" | "IMPROVEMENT";
+}
+
 export interface ReleaseObj {
     id: string;
     version: string;
