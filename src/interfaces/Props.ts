@@ -8,6 +8,8 @@ export interface CategoryBoxProps {
     categoryType: "NEW_FEATURE" | "BUG_FIX" | "IMPROVEMENT";
     entries?: Entry[];
     onAddEntry: (category: string, displayOrder: number) => void;
+    onReorder?: (entries: Entry[]) => void;
+    onUpdateEntry?: (entryId: string, newDescription: string) => void;
 }
 
 export interface HeaderProps {
