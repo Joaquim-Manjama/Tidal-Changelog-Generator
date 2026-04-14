@@ -9,6 +9,7 @@ import NoProjects from '../components/NoProjects.tsx';
 import '../index.css'
 import Project from '../components/Project.tsx';
 import ProjectForm from '../components/ProjectForm.tsx';
+import GitHubConnectButton from '../components/GitHubConnectButton.tsx';
 
 const Home = () => {
     const { firstName, projects, setUserInfo, setUserProjects} = useUserData();
@@ -65,6 +66,13 @@ const Home = () => {
         };
         
         verify();
+
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("github") === "connected") {
+            alert("GitHub account connected successfully!");
+            window.history.replaceState({}, '', '/dashboard'); // Clear query params
+        }
+
     }, [])
 
     if (loading) {
@@ -77,7 +85,11 @@ const Home = () => {
         <SideBar/> 
         <div className='ml-[220px] p-5 mt-[-16px] text-black overflow-y-auto max-h-screen flex-1'>
             <Header type="dashboard"/>
-            <h1 className="text-4xl font-medium mb-10">Hello {firstName}!</h1>
+            <div className='flex justify-between'>
+                <h1 className="text-4xl font-medium mb-10">Hello {firstName}!</h1>
+                <GitHubConnectButton />
+            </div>
+
             {
                 projects.length == 0? 
                 <NoProjects/> 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import CategoryBox from "../components/CategoryBox";
 import SideBar from "../components/SideBar";
 import { useUserData } from "../contexts/UserDataContext";
-import type { ReleaseObj, Entry } from "../interfaces/Objects";
+import type { Entry } from "../interfaces/Objects";
 import { NavLink } from "react-router";
 import { getAllEntries, updateEntry } from "../services/ChangelogEntry";
 import CategoryForm from "../components/CategoryForm";
@@ -56,6 +56,7 @@ const InlineTextareaEdit = ({ value, onSave }: { value: string; onSave: (v: stri
 
 const ReleasePage = () => {
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [entriesLoading, setEntriesLoading] = useState(false);
     const [features, setFeatures] = useState<Entry[]>([]);
     const [fixes, setFixes] = useState<Entry[]>([]);
