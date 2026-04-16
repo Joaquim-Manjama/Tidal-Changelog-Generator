@@ -19,3 +19,8 @@ export interface ReleaseObj {
     createdAt: string;
     status: string
 }
+
+export interface GitHubStatus {
+    connected: boolean;
+    username?: string;
+}
