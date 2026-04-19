@@ -98,17 +98,17 @@ const Home = () => {
                 <div>
                     <h1 className="text-4xl font-medium mb-10">Hello {firstName}!</h1>
                     
-                    <h1 className='flex gap-1 items-center text-gray-700 bg-gray-300 w-max pl-2 pr-2 rounded-[10px] text-sm font-medium -mt-7 mb-7'>
+                    {githubStatus && <h1 className='flex gap-1 items-center text-gray-700 bg-gray-300 w-max pl-2 pr-2 rounded-[10px] text-sm font-medium -mt-7 mb-7'>
                         <div className='relative w-5 h-5 flex justify-center items-center'>
                             <span className="h-4 w-4 rounded-full bg-green-400 opacity-75 animate-ping"></span>
                             <span className="absolute h-2 w-2  rounded-full bg-green-500"></span>
                         </div>
                         {githubStatus?.username}
                         <div className='text-xl'><i className="fa fa-github"></i></div>
-                    </h1>
+                    </h1>}
                 </div>
                 
-                {!githubStatus?.connected && <GitHubConnectButton />}
+            <GitHubConnectButton connected={githubStatus?.connected || false} />
             </div>
 
             {

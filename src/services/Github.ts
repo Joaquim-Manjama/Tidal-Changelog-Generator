@@ -47,3 +47,24 @@ export const getGitHubStatus = async () => {
         console.error("Error fetching GitHub status:", error);
     }
 }
+
+export const disconnectGitHub = async () => {
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch(`${API_URL}/github/disconnect`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            console.log("GitHub disconnected successfully");
+        }
+
+    } catch (error) {
+        console.error("Error disconnecting from GitHub:", error);
+    }
+}
