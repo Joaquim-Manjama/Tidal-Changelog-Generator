@@ -9,12 +9,16 @@ import NoProjects from '../components/NoProjects.tsx';
 import '../index.css'
 import Project from '../components/Project.tsx';
 import ProjectForm from '../components/ProjectForm.tsx';
+import GitHubConnectButton from '../components/GitHubConnectButton.tsx';
+import { getGitHubStatus } from '../services/Github.ts';
+import type { GitHubStatus } from '../interfaces/Objects.ts';
 
 const Home = () => {
     const { firstName, projects, setUserInfo, setUserProjects} = useUserData();
     const [loading, setLoading] = useState<boolean>(true);
     const [isFormActive, setIsFormActive] = useState<boolean>(false);
     const [isUpdating, setIsUpdting] = useState<boolean>(false);
+    const [githubStatus, setGithubStatus] = useState<GitHubStatus | null>(null);
 
     const navigate = useNavigate();
 
@@ -42,9 +46,14 @@ const Home = () => {
 
                     try {
                         const projectData = await getProjects();
+                        const githubData = await getGitHubStatus();
 
                         if (projectData) {
                             setUserProjects(projectData);
+                        }
+
+                        if (githubData) {
+                            setGithubStatus(githubData);
                         }
                     } catch (error) {
                         console.error(error);
@@ -65,6 +74,13 @@ const Home = () => {
         };
         
         verify();
+
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("github") === "connected") {
+            alert("GitHub account connected successfully!");
+            window.history.replaceState({}, '', '/dashboard'); // Clear query params
+        }
+
     }, [])
 
     if (loading) {
@@ -77,7 +93,24 @@ const Home = () => {
         <SideBar/> 
         <div className='ml-[220px] p-5 mt-[-16px] text-black overflow-y-auto max-h-screen flex-1'>
             <Header type="dashboard"/>
-            <h1 className="text-4xl font-medium mb-10">Hello {firstName}!</h1>
+            <div className='flex justify-between'>
+
+                <div>
+                    <h1 className="text-4xl font-medium mb-10">Hello {firstName}!</h1>
+                    
+                    {githubStatus && <h1 className='flex gap-1 items-center text-gray-700 bg-gray-300 w-max pl-2 pr-2 rounded-[10px] text-sm font-medium -mt-7 mb-7'>
+                        <div className='relative w-5 h-5 flex justify-center items-center'>
+                            <span className="h-4 w-4 rounded-full bg-green-400 opacity-75 animate-ping"></span>
+                            <span className="absolute h-2 w-2  rounded-full bg-green-500"></span>
+                        </div>
+                        {githubStatus?.username}
+                        <div className='text-xl'><i className="fa fa-github"></i></div>
+                    </h1>}
+                </div>
+                
+            <GitHubConnectButton connected={githubStatus?.connected || false} />
+            </div>
+
             {
                 projects.length == 0? 
                 <NoProjects/> 
