@@ -129,3 +129,31 @@ export const updateProject = async (id: string, name: string, slug: string, gith
         throw error;
     }
 }
+
+export const getProject = async (slug: string) => {
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch(`${API_URL}/projects/get/${slug}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        console.log("Status:", response.status);
+        const text = await response.text();
+        console.log("Raw response:", text);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return JSON.parse(text);
+
+    } catch (error) {
+        console.error("Error: ", error);
+        throw error;
+    }
+}

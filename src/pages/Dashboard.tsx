@@ -9,7 +9,6 @@ import NoProjects from '../components/NoProjects.tsx';
 import '../index.css'
 import Project from '../components/Project.tsx';
 import ProjectForm from '../components/ProjectForm.tsx';
-import GitHubConnectButton from '../components/GitHubConnectButton.tsx';
 import { getGitHubStatus } from '../services/Github.ts';
 import type { GitHubStatus } from '../interfaces/Objects.ts';
 
@@ -19,6 +18,7 @@ const Home = () => {
     const [isFormActive, setIsFormActive] = useState<boolean>(false);
     const [isUpdating, setIsUpdting] = useState<boolean>(false);
     const [githubStatus, setGithubStatus] = useState<GitHubStatus | null>(null);
+    
 
     const navigate = useNavigate();
 
@@ -108,7 +108,6 @@ const Home = () => {
                     </h1>}
                 </div>
                 
-            <GitHubConnectButton connected={githubStatus?.connected || false} />
             </div>
 
             {
