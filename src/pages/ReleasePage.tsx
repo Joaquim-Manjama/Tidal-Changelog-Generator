@@ -7,6 +7,7 @@ import { NavLink } from "react-router";
 import { getAllEntries, updateEntry } from "../services/ChangelogEntry";
 import CategoryForm from "../components/CategoryForm";
 import { toggleReleaseStatus, updateRelease } from "../services/Releases";
+import ConfirmationModal from "../components/ConfirmationModal";
 
 const InlineEdit = ({ value, onSave }: { value: string; onSave: (v: string) => void }) => {
     const [editing, setEditing] = useState(false);
@@ -62,6 +63,7 @@ const ReleasePage = () => {
     const [fixes, setFixes] = useState<Entry[]>([]);
     const [improvements, setImprovements] = useState<Entry[]>([]);
     const [isformActive, setIsFormActive] = useState<boolean>(false);
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const {currentRelease, setCurrentProjectRelease} = useUserData();
 
     const {setCurrentEntryCategory, setCurrentEntryDisplayOrder} = useUserData();
@@ -121,6 +123,11 @@ const ReleasePage = () => {
         await toggleReleaseStatus(currentRelease.id);
     };
 
+    const handleConfirmPublish = async () => {
+        await handlePublish();
+        setIsConfirmOpen(false);
+    };
+
     const handleReleaseUpdate = (field: string, newValue: string) => {
         setCurrentProjectRelease({ ...currentRelease, [field]: newValue });
         updateRelease(currentRelease.id, field === "version" ? newValue : currentRelease.version, field === "description" ? newValue : currentRelease.description)
@@ -158,7 +165,7 @@ const ReleasePage = () => {
                     <span className="material-symbols-outlined">keyboard_double_arrow_left</span>
                 </NavLink>
                 <div className="flex h-[100%] justify-end items-center mr-[220px] p-5">
-                    <button onClick={() => handlePublish()} className={`text-${currentRelease.status === "DRAFT" ? "green-600" : "red-500"} font-thin bg-gray-700 border border-white/2 p-2 pl-4 pr-4 rounded hover:cursor-pointer`}>{currentRelease.status === "DRAFT" ? "Publish" : "Unpublish"}</button>
+                    <button onClick={() => setIsConfirmOpen(true)} className={`text-${currentRelease.status === "DRAFT" ? "green-600" : "red-500"} font-thin bg-gray-700 border border-white/2 p-2 pl-4 pr-4 rounded hover:cursor-pointer`}>{currentRelease.status === "DRAFT" ? "Publish" : "Unpublish"}</button>
                 </div>
             </div>
 
@@ -184,6 +191,16 @@ const ReleasePage = () => {
         </div>
 
         {isformActive && <CategoryForm onClose={handleCloseForm} />}
+
+        <ConfirmationModal
+            isOpen={isConfirmOpen}
+            onClose={() => setIsConfirmOpen(false)}
+            onConfirm={handleConfirmPublish}
+            title="Confirm Publish/Unpublish"
+            message={`Are you sure you want to ${currentRelease.status === 'DRAFT' ? 'publish' : 'unpublish'} this release? Subscribers will be notified.`}
+            confirmText={currentRelease.status === 'DRAFT' ? "Publish" : "Unpublish"}
+            cancelText="Cancel"
+        />
     </div>
 }
 

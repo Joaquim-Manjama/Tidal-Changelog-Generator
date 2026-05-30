@@ -1,20 +1,24 @@
 import { useNavigate } from "react-router";
 import { useUserData } from "../contexts/UserDataContext";
+import { useState } from "react";
 import type { ReleaseProps } from "../interfaces/Props";
 import { toggleReleaseStatus } from "../services/Releases";
+import ConfirmationModal from "./ConfirmationModal";
 
 const Release = ({id, version, description, createdAt, status, onEdit}: ReleaseProps) => {
-    
+
     const {setCurrentProjectRelease} = useUserData();
     const navigate = useNavigate();
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
     const handleEdit = () => {
         onEdit(id, version, description);
     }
 
-    const handlePublish = async () => {
+    const handleConfirmPublish = async () => {
         await toggleReleaseStatus(id);
         window.location.reload()
+        setIsConfirmOpen(false);
     }
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -27,25 +31,38 @@ const Release = ({id, version, description, createdAt, status, onEdit}: ReleaseP
         }
     }
 
-    return <div onClick={(e) => handleClick(e)} className="shadow-xl relative rounded bg-gray-300 flex flex-col p-4 gap-5 w-[500px] m-auto transition duration-200 hover:cursor-pointer hover:-translate-y-3 hover:shadow-2xl">
-        <div className="flex justify-between">
-            <p>{version}</p>
-            <p>{createdAt}</p>
-            <p className={status=="DRAFT"? "text-yellow-700" : "text-green-600"}>[{status}]</p>
-        </div>
-        <div className="flex justify-between">
-            <p>✨0 features</p>
-            <p>.</p>
-            <p>🐛0 fixes</p>
-            <p>.</p>
-            <p>⚡0 improvements</p>
-        </div>
-        <p>{description}</p>
-        <div className="flex gap-5 justify-end">
-            <button onClick={() => handleEdit()} className="text-white bg-black p-2 pl-4 pr-4 rounded hover:cursor-pointer">Edit</button>
-            <button onClick={() => handlePublish()} className={`${status=="PUBLISHED"? "bg-red-900" : "bg-green-900"} text-white p-2 pl-4 pr-4 rounded hover:cursor-pointer`}>{status=="PUBLISHED"? "Unpublish" : "Publish"}</button>
-        </div>
-    </div>
+    return (
+        <>
+            <div onClick={(e) => handleClick(e)} className="shadow-xl relative rounded bg-gray-300 flex flex-col p-4 gap-5 w-[500px] m-auto transition duration-200 hover:cursor-pointer hover:-translate-y-3 hover:shadow-2xl">
+                <div className="flex justify-between">
+                    <p>{version}</p>
+                    <p>{createdAt}</p>
+                    <p className={status=="DRAFT"? "text-yellow-700" : "text-green-600"}>[{status}]</p>
+                </div>
+                <div className="flex justify-between">
+                    <p>✨0 features</p>
+                    <p>.</p>
+                    <p>🐛0 fixes</p>
+                    <p>.</p>
+                    <p>⚡0 improvements</p>
+                </div>
+                <p>{description}</p>
+                <div className="flex gap-5 justify-end">
+                    <button onClick={() => handleEdit()} className="text-white bg-black p-2 pl-4 pr-4 rounded hover:cursor-pointer">Edit</button>
+                    <button onClick={() => setIsConfirmOpen(true)} className={`${status=="PUBLISHED"? "bg-red-900" : "bg-green-900"} text-white p-2 pl-4 pr-4 rounded hover:cursor-pointer`}>{status=="PUBLISHED"? "Unpublish" : "Publish"}</button>
+                </div>
+            </div>
+            <ConfirmationModal
+                isOpen={isConfirmOpen}
+                onClose={() => setIsConfirmOpen(false)}
+                onConfirm={handleConfirmPublish}
+                title="Confirm Publish/Unpublish"
+                message={`Are you sure you want to ${status==='PUBLISHED' ? 'unpublish' : 'publish'} this release. Subscribers will be notified.`}
+                confirmText={status==='PUBLISHED' ? "Unpublish" : "Publish"}
+                cancelText="Cancel"
+            />
+        </>
+    )
 }
 
 export default Release;

@@ -2,7 +2,7 @@ import SideBar from "../components/SideBar";
 import Header from "../components/Header";
 import { useUserData } from "../contexts/UserDataContext";
 import { deleteProject } from "../services/Projects";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
 const ProjectSettings = () => {
    
@@ -23,6 +23,9 @@ const ProjectSettings = () => {
             <SideBar/> 
             <div className='ml-[220px] p-5 mt-[-16px] text-black overflow-y-auto max-h-screen flex-1'>
                 <Header type="dashboard"/>
+                <NavLink to="/project" className={"absolute top-[19px] left-[220px] bg-black p-4 pt-2 pb-1 rounded-xl bg-transparent scale-[1.5] font-normal hover:text-gray-300 hover:cursor-pointer transition duration-200 ease-in-out"}>
+                    <span className="material-symbols-outlined">keyboard_double_arrow_left</span>
+                </NavLink>
                 <h1 className="text-4xl font-medium mb-10">Project Settings</h1>
                 
                 <h1 className="text-3xl mb-3">Profile</h1>
