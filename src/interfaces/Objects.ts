@@ -20,6 +20,15 @@ export interface ReleaseObj {
     status: string
 }
 
+export interface GitHubRepo {
+    id: string;
+    name: string;
+    fullName: string;
+    description: string;
+    htmlUrl: string;
+    defaultBranch: string;
+}
+
 export interface GitHubStatus {
     connected: boolean;
     username?: string;

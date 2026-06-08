@@ -68,3 +68,26 @@ export const disconnectGitHub = async () => {
         console.error("Error disconnecting from GitHub:", error);
     }
 }
+
+export const getGitHubRepos = async () => {
+    const token = localStorage.getItem("token");
+    
+    try {
+        const response = await fetch(`${API_URL}/github/get/repos`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log("GitHub repos:", data);
+            return data;
+        }
+
+    } catch (error) {
+        console.error("Error fetching GitHub repos:", error);
+    }
+}

@@ -196,7 +196,7 @@ const ReleasePage = () => {
             isOpen={isConfirmOpen}
             onClose={() => setIsConfirmOpen(false)}
             onConfirm={handleConfirmPublish}
-            title="Confirm Publish/Unpublish"
+            title={`Confirm ${currentRelease.status === 'DRAFT' ? "Publish" : "Unpublish"}`}
             message={`Are you sure you want to ${currentRelease.status === 'DRAFT' ? 'publish' : 'unpublish'} this release? Subscribers will be notified.`}
             confirmText={currentRelease.status === 'DRAFT' ? "Publish" : "Unpublish"}
             cancelText="Cancel"

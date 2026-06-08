@@ -54,6 +54,7 @@ const Home = () => {
 
                         if (githubData) {
                             setGithubStatus(githubData);
+                            sessionStorage.setItem("githubStatus", JSON.stringify(githubData));
                         }
                     } catch (error) {
                         console.error(error);

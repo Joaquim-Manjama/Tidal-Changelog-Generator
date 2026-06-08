@@ -3,10 +3,17 @@ import Header from "../components/Header";
 import { useUserData } from "../contexts/UserDataContext";
 import { deleteProject } from "../services/Projects";
 import { NavLink, useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { getGitHubRepos } from "../services/Github";
+import type { GitHubRepo } from "../interfaces/Objects";
 
 const ProjectSettings = () => {
    
     const {currentProject} = useUserData();
+
+    const [githubRepos, setGithubRepos] = useState<GitHubRepo[]>([]);
+    const [currentRepoIndex, setCurrentRepoIndex] = useState<number | null>(null);
+    const [isRepoSaved, setIsRepoSaved] = useState(true);
 
     const githubStatus = JSON.parse(sessionStorage.getItem("githubStatus") || "null");
 
@@ -14,10 +21,37 @@ const ProjectSettings = () => {
     
     const handleDelete = async () => {
             
-            const response = await deleteProject(currentProject.id);
-            console.log(response);
-            navigate("/dashboard");
+        const response = await deleteProject(currentProject.id);
+        console.log(response);
+        navigate("/dashboard");
+    }
+
+    useEffect(() => {
+
+        if (!githubStatus?.connected) return;
+
+        const getRepos = async () => {
+
+            try {
+                const respose = await getGitHubRepos();
+                
+                if (respose) {
+                    setGithubRepos(respose);
+                }
+            } catch (error) {
+                console.error(error);
+            }
         }
+
+        getRepos();
+
+    }, [])
+
+    const handleChangeRepo = (index: number) => {
+
+        setIsRepoSaved(false);
+        setCurrentRepoIndex(index);
+    }
    
     return <div className="relative p-4 pr-0 w-full min-h-screen flex texture">
             <SideBar/> 
@@ -47,6 +81,15 @@ const ProjectSettings = () => {
                         githubStatus?.connected ?
                         <p>
                             <span className="font-medium text-dark-teal-700">Repository: </span>
+                            <select name="" id="" value={currentRepoIndex ?? -1} onChange={(e)=> handleChangeRepo(e.target.value)} defaultValue={-1} className="bg-gray-800 text-white h-12 pl-2 pr-2 rounded hover:cursor-pointer w-70">
+                                    <option value={-1}>None</option>
+                                    {githubRepos.map((repo, index) => (
+                                        <option value={index}>{repo.name}</option>
+                                    ))}
+                            </select>
+
+
+                            {!isRepoSaved && <button className="bg-green-700 text-white h-12 pl-2 pr-2 rounded hover:bg-green-900 hover:cursor-pointer w-70 ml-[50px]">Save</button>}
                         </p>
                         :
                         <button className="bg-gray-800 text-white h-12 pl-2 pr-2 rounded hover:bg-gray-600 hover:cursor-pointer w-70">
