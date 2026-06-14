@@ -130,11 +130,11 @@ export const updateProject = async (id: string, name: string, slug: string, gith
     }
 }
 
-export const getProject = async (slug: string) => {
+export const getProject = async (id: string) => {
     const token = localStorage.getItem("token");
 
     try {
-        const response = await fetch(`${API_URL}/projects/get/${slug}`, {
+        const response = await fetch(`${API_URL}/projects/get/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

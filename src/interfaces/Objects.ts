@@ -23,10 +23,10 @@ export interface ReleaseObj {
 export interface GitHubRepo {
     id: string;
     name: string;
-    fullName: string;
+    full_name: string;
     description: string;
-    htmlUrl: string;
-    defaultBranch: string;
+    html_url: string;
+    default_branch: string;
 }
 
 export interface GitHubStatus {

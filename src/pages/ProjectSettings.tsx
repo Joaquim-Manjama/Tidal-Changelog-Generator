@@ -1,7 +1,7 @@
 import SideBar from "../components/SideBar";
 import Header from "../components/Header";
 import { useUserData } from "../contexts/UserDataContext";
-import { deleteProject } from "../services/Projects";
+import { deleteProject, getProject, updateProject } from "../services/Projects";
 import { NavLink, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { getGitHubRepos } from "../services/Github";
@@ -9,11 +9,12 @@ import type { GitHubRepo } from "../interfaces/Objects";
 
 const ProjectSettings = () => {
    
-    const {currentProject} = useUserData();
+    const {currentProject, setCurrentUserProject} = useUserData();
 
     const [githubRepos, setGithubRepos] = useState<GitHubRepo[]>([]);
-    const [currentRepoIndex, setCurrentRepoIndex] = useState<number | null>(null);
+    const [currentRepoIndex, setCurrentRepoIndex] = useState<number>(-1);
     const [isRepoSaved, setIsRepoSaved] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const githubStatus = JSON.parse(sessionStorage.getItem("githubStatus") || "null");
 
@@ -32,15 +33,26 @@ const ProjectSettings = () => {
 
         const getRepos = async () => {
 
+            setLoading(true);
             try {
                 const respose = await getGitHubRepos();
                 
                 if (respose) {
                     setGithubRepos(respose);
                 }
+
+                for (let i = 0; i < respose.length; i++) {
+                    if (respose[i].html_url === currentProject.githubRepo) {
+                        setCurrentRepoIndex(i);
+                        break;
+                    }
+                }
+
             } catch (error) {
+                setLoading(false);
                 console.error(error);
             }
+            setLoading(false);
         }
 
         getRepos();
@@ -51,6 +63,30 @@ const ProjectSettings = () => {
 
         setIsRepoSaved(false);
         setCurrentRepoIndex(index);
+    }
+
+    const handleSaveRepo = async () => {
+        try {
+        
+            if (currentRepoIndex == -1) return;
+
+            const response = await updateProject(currentProject.id, currentProject.name, currentProject.slug, githubRepos[currentRepoIndex].html_url);
+
+            if (!response) {
+                alert("Failed to update the project. Please try again.");
+                return;
+            }
+
+            setIsRepoSaved(true);
+
+            const updatedProject = await getProject(currentProject.id);
+            
+            setCurrentUserProject(updatedProject);
+
+        } catch (error) {
+            console.error(error);
+        }  
+        
     }
    
     return <div className="relative p-4 pr-0 w-full min-h-screen flex texture">
@@ -81,20 +117,22 @@ const ProjectSettings = () => {
                         githubStatus?.connected ?
                         <p>
                             <span className="font-medium text-dark-teal-700">Repository: </span>
-                            <select name="" id="" value={currentRepoIndex ?? -1} onChange={(e)=> handleChangeRepo(e.target.value)} defaultValue={-1} className="bg-gray-800 text-white h-12 pl-2 pr-2 rounded hover:cursor-pointer w-70">
+                            {loading ? <p>Loading...</p> : (<select name="" id="" value={currentRepoIndex ?? -1} onChange={(e)=> handleChangeRepo(e.target.value)} defaultValue={-1} className="bg-gray-800 text-white h-12 pl-2 pr-2 rounded hover:cursor-pointer w-70">
                                     <option value={-1}>None</option>
                                     {githubRepos.map((repo, index) => (
                                         <option value={index}>{repo.name}</option>
                                     ))}
-                            </select>
+                            </select>)}
 
 
-                            {!isRepoSaved && <button className="bg-green-700 text-white h-12 pl-2 pr-2 rounded hover:bg-green-900 hover:cursor-pointer w-70 ml-[50px]">Save</button>}
+                            {!isRepoSaved && <button onClick={() => handleSaveRepo()} className="bg-green-700 text-white h-12 pl-2 pr-2 rounded hover:bg-green-900 hover:cursor-pointer w-70 ml-[50px]">Save</button>}
                         </p>
                         :
-                        <button className="bg-gray-800 text-white h-12 pl-2 pr-2 rounded hover:bg-gray-600 hover:cursor-pointer w-70">
-                            Connect to your GitHub Account
-                        </button>
+                        <NavLink to="/settings"  className="w-full flex justify-center">
+                            <button className="pt-4 pb-4 m-auto bg-gray-800 text-white h-12 pl-2 pr-2 rounded hover:bg-gray-600 hover:cursor-pointer w-70">
+                                Connect to your GitHub Account
+                            </button>
+                        </NavLink>
                     }
                 </div>
 
