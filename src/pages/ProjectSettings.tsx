@@ -68,9 +68,13 @@ const ProjectSettings = () => {
     const handleSaveRepo = async () => {
         try {
         
-            if (currentRepoIndex == -1) return;
+            if (currentRepoIndex == -1 && currentProject.githubRepo == "") {
+                setIsRepoSaved(true);
+                return;
+            }
 
-            const response = await updateProject(currentProject.id, currentProject.name, currentProject.slug, githubRepos[currentRepoIndex].html_url);
+            const repo = currentRepoIndex == -1 ? "" : githubRepos[currentRepoIndex].html_url;
+            const response = await updateProject(currentProject.id, currentProject.name, currentProject.slug, repo);
 
             if (!response) {
                 alert("Failed to update the project. Please try again.");
@@ -117,7 +121,7 @@ const ProjectSettings = () => {
                         githubStatus?.connected ?
                         <p>
                             <span className="font-medium text-dark-teal-700">Repository: </span>
-                            {loading ? <p>Loading...</p> : (<select name="" id="" value={currentRepoIndex ?? -1} onChange={(e)=> handleChangeRepo(e.target.value)} defaultValue={-1} className="bg-gray-800 text-white h-12 pl-2 pr-2 rounded hover:cursor-pointer w-70">
+                            {loading ? <p>Loading...</p> : (<select name="" id="" value={currentRepoIndex ?? -1} onChange={(e)=> handleChangeRepo(parseInt(e.target.value))} defaultValue={-1} className="bg-gray-800 text-white h-12 pl-2 pr-2 rounded hover:cursor-pointer w-70">
                                     <option value={-1}>None</option>
                                     {githubRepos.map((repo, index) => (
                                         <option value={index}>{repo.name}</option>

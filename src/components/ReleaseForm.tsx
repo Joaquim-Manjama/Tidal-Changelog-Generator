@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createRelease, updateRelease } from "../services/Releases";
 import type { ReleaseFormProps } from "../interfaces/Props";
+import { useUserData } from "../contexts/UserDataContext";
 
 
 const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProps) => {
@@ -9,6 +10,9 @@ const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProp
 
     const [versionInput, setVersion] = useState<string>(version);
     const [descriptionInput, setDescription] = useState<string>(description);
+    const [importFromGitHub, setImportFromGitHub] = useState<number>(0);
+
+    const {currentProject} = useUserData();
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -27,6 +31,27 @@ const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProp
                 <input type="text" value={versionInput} onChange={(e) => setVersion(e.target.value)} className={inputStyle} placeholder="v1.0.0" required/>
                 <label htmlFor="">Description*</label>
                 <textarea value={descriptionInput} onChange={(e) => setDescription(e.target.value)} className={inputStyle} placeholder="Big Performance Update!" required></textarea>
+                { currentProject?.githubRepo 
+                    && 
+                    <div className="flex col gap-2">
+                        <input type="checkbox" value={importFromGitHub} onChange={() => setImportFromGitHub(prev => prev * -1 + 1)}/>
+                        <p>Import from Github</p>
+                    </div> 
+                }
+                {
+                    importFromGitHub != 0
+                    && 
+                    <div className="flex gap-5 wrap">
+                        <div className="flex col gap-2">
+                            <p>From: </p>
+                            <input type="date" className="bg-dark-teal-700 p-2 rounded-lg shadow-xl text-white hover:cursor-pointer hover:bg-dark-teal-800"/>
+                        </div>
+                        <div className="flex col gap-2">
+                            <p>To: </p>
+                            <input type="date" className="bg-dark-teal-700 p-2 rounded-lg shadow-xl text-white hover:cursor-pointer hover:bg-dark-teal-800"/>
+                        </div>
+                    </div>
+                }
                 <button type="submit" className="bg-dark-teal-700 p-4 rounded-lg shadow-xl text-white hover:cursor-pointer hover:bg-dark-teal-800">{`${(version == "" && description == "") ? "+ Create": "Update"} Draft`}</button>
             </form>
         </div>  
