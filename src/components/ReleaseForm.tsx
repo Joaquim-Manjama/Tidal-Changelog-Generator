@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createRelease, updateRelease } from "../services/Releases";
 import type { ReleaseFormProps } from "../interfaces/Props";
 import { useUserData } from "../contexts/UserDataContext";
@@ -7,12 +7,22 @@ import { useUserData } from "../contexts/UserDataContext";
 const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProps) => {
     
     const inputStyle = `focus:border-dark-teal-700 focus:outline-none p-3 shadow rounded border border-white/10 mb-5 w-full -mt-4`;
+    
 
     const [versionInput, setVersion] = useState<string>(version);
     const [descriptionInput, setDescription] = useState<string>(description);
-    const [importFromGitHub, setImportFromGitHub] = useState<number>(0);
+    const [importFromGitHub, setImportFromGitHub] = useState<number>(0)
+
+    const date = new Date()
+    const formatDate = (value: number): string | number => {
+        return value < 10 ? `0${value}` : value;
+    }
+
+    const [sinceDate, setSinceDate] = useState<string>()
+    const [untilDate, setUntilDate] = useState<string>(`${date.getFullYear()}-${formatDate(date.getMonth() + 1)}-${formatDate(date.getDate())}`)
 
     const {currentProject} = useUserData();
+
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -22,6 +32,26 @@ const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProp
         onClose();
         window.location.reload();
     }
+
+    useEffect(() => {
+ 
+        const setUp = async() => {
+
+            const rls = sessionStorage.getItem("UserProjectReleases");
+
+            if (rls) {
+                const releases = JSON.parse(rls);
+                console.log(releases)
+                const newestDate = new Date(
+                    Math.max(...releases.map(r => new Date(r.createdAt).getTime()))
+                );
+
+                setSinceDate(`${newestDate.getFullYear()}-${formatDate(newestDate.getMonth() + 1)}-${formatDate(newestDate.getDate())}`);
+            }
+        }
+
+        setUp();
+    })
 
     return<div className="absolute top-0 left-0 w-full h-screen flex transition duration-200 text-black">
             <form action=""  onSubmit={(e) => handleSubmit(e)} className="m-auto bg-white/30 backdrop-blur-xl m-auto w-[500px] rounded-2xl border border-white/10 shadow-xl p-8 flex flex-col gap-5">
@@ -44,11 +74,11 @@ const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProp
                     <div className="flex gap-5 wrap">
                         <div className="flex col gap-2">
                             <p>From: </p>
-                            <input type="date" className="bg-dark-teal-700 p-2 rounded-lg shadow-xl text-white hover:cursor-pointer hover:bg-dark-teal-800"/>
+                            <input type="date" value={sinceDate} onChange={(e) => {console.log(sinceDate);setUntilDate(e.target.value);}} className="bg-dark-teal-700 p-2 rounded-lg shadow-xl text-white hover:cursor-pointer hover:bg-dark-teal-800"/>
                         </div>
                         <div className="flex col gap-2">
                             <p>To: </p>
-                            <input type="date" className="bg-dark-teal-700 p-2 rounded-lg shadow-xl text-white hover:cursor-pointer hover:bg-dark-teal-800"/>
+                            <input type="date" value={untilDate} onChange={(e) => {console.log(untilDate);setUntilDate(e.target.value);}} className="bg-dark-teal-700 p-2 rounded-lg shadow-xl text-white hover:cursor-pointer hover:bg-dark-teal-800"/>
                         </div>
                     </div>
                 }
