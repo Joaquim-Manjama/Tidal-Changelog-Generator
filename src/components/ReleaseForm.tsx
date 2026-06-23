@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createRelease, updateRelease } from "../services/Releases";
 import type { ReleaseFormProps } from "../interfaces/Props";
+import type { ReleaseObj } from "../interfaces/Objects";
 import { useUserData } from "../contexts/UserDataContext";
 
 
@@ -42,9 +43,11 @@ const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProp
             if (rls) {
                 const releases = JSON.parse(rls);
                 console.log(releases)
-                const newestDate = new Date(
-                    Math.max(...releases.map(r => new Date(r.createdAt).getTime()))
+                const newestCreatedDate = new Date(
+                    Math.max(...releases.map((r: ReleaseObj) => new Date(r.createdAt).getTime()))
                 );
+
+                const newestDate = newestCreatedDate;
 
                 setSinceDate(`${newestDate.getFullYear()}-${formatDate(newestDate.getMonth() + 1)}-${formatDate(newestDate.getDate())}`);
             }
