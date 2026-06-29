@@ -5,7 +5,7 @@ import type { ReleaseObj } from "../interfaces/Objects";
 import { useUserData } from "../contexts/UserDataContext";
 
 
-const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProps) => {
+const ReleaseForm = ({projectId, version, description, onClose, onImport}: ReleaseFormProps) => {
     
     const inputStyle = `focus:border-dark-teal-700 focus:outline-none p-3 shadow rounded border border-white/10 mb-5 w-full -mt-4`;
     
@@ -27,6 +27,11 @@ const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProp
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (importFromGitHub == 1) {
+            await onImport(sinceDate || "", untilDate || "");
+            return;
+        }
 
         const response = (version == "" && description == "") ? await createRelease(projectId, versionInput, descriptionInput): await updateRelease(projectId, versionInput, descriptionInput);
         console.log(response);
@@ -54,7 +59,7 @@ const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProp
         }
 
         setUp();
-    })
+    }, [])
 
     return<div className="absolute top-0 left-0 w-full h-screen flex transition duration-200 text-black">
             <form action=""  onSubmit={(e) => handleSubmit(e)} className="m-auto bg-white/30 backdrop-blur-xl m-auto w-[500px] rounded-2xl border border-white/10 shadow-xl p-8 flex flex-col gap-5">
@@ -77,7 +82,7 @@ const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProp
                     <div className="flex gap-5 wrap">
                         <div className="flex col gap-2">
                             <p>From: </p>
-                            <input type="date" value={sinceDate} onChange={(e) => {console.log(sinceDate);setUntilDate(e.target.value);}} className="bg-dark-teal-700 p-2 rounded-lg shadow-xl text-white hover:cursor-pointer hover:bg-dark-teal-800"/>
+                            <input type="date" value={sinceDate} onChange={(e) => {console.log(sinceDate);setSinceDate(e.target.value);}} className="bg-dark-teal-700 p-2 rounded-lg shadow-xl text-white hover:cursor-pointer hover:bg-dark-teal-800"/>
                         </div>
                         <div className="flex col gap-2">
                             <p>To: </p>
@@ -85,7 +90,7 @@ const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProp
                         </div>
                     </div>
                 }
-                <button type="submit" className="bg-dark-teal-700 p-4 rounded-lg shadow-xl text-white hover:cursor-pointer hover:bg-dark-teal-800">{`${(version == "" && description == "") ? "+ Create": "Update"} Draft`}</button>
+                <button type="submit" className="bg-dark-teal-700 p-4 rounded-lg shadow-xl text-white hover:cursor-pointer hover:bg-dark-teal-800">{`${importFromGitHub == 1 ? "Import from GitHub" : (version == "" && description == "") ? "+ Create Draft": "Update Draft"}`}</button>
             </form>
         </div>  
 }

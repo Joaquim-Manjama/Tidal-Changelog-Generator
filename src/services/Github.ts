@@ -91,3 +91,34 @@ export const getGitHubRepos = async () => {
         console.error("Error fetching GitHub repos:", error);
     }
 }
+
+
+export const getGitHubChanges = async (repo: string, since: string, until:string) => {
+    const token = localStorage.getItem("token");
+
+    const params = new URLSearchParams();
+    params.append("repo", repo);
+    params.append("since", since);
+    params.append("until", until);
+
+    console.log("Fetching GitHub changes for repo:", repo, "since:", since, "until:", until + "\n From: " + `${API_URL}/github/get/changes?${params}`);
+    
+    try {
+        const response = await fetch(`${API_URL}/github/get/changes?${params}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log("GitHub Changes:", data);
+            return data;
+        }
+
+    } catch (error) {
+        console.error("Error fetching GitHub changes:", error);
+    }
+}

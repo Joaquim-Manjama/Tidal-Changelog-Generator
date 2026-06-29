@@ -7,10 +7,12 @@ import { useEffect, useState } from "react";
 import { getReleases } from "../services/Releases";
 import Release from "../components/Release";
 import ReleaseForm from "../components/ReleaseForm";
+import { getGitHubChanges } from "../services/Github";
 
 const ProjectPage = () => {
 
     const [formActive, setFormActive] = useState(false);
+    //const [importActive, setImportActive] = useState(false);
     const [currentRelease, setCurrentRelease] = useState<{id: string, version: string, description: string} | null>(null);
 
     const {currentProject, releases, setUserProjectReleases} = useUserData();
@@ -20,6 +22,20 @@ const ProjectPage = () => {
     const handleCloseForm = () => {
         setFormActive(false);
         setCurrentRelease(null);
+    }
+
+    const handleImportFromGitHub = async (sinceDate: string, untilDate: string) => {
+        
+        const githubURL = currentProject.githubRepo.split("/");
+        const projectName = githubURL[githubURL.length - 1];
+
+        try {
+            await getGitHubChanges(projectName || "", sinceDate, untilDate);
+        } catch (error) {
+            console.error("Error importing changes from GitHub:", error);
+        }
+
+        handleCloseForm();
     }
 
     const handleEditRelease = (id: string, version: string, description: string) => {
@@ -97,7 +113,7 @@ const ProjectPage = () => {
             {
                 formActive 
                     && 
-                <ReleaseForm projectId={currentRelease?.id || ""} version={currentRelease?.version || ""} description={currentRelease?.description || ""} onClose={() => handleCloseForm()}/>
+                <ReleaseForm projectId={currentRelease?.id || ""} version={currentRelease?.version || ""} description={currentRelease?.description || ""} onClose={() => handleCloseForm()} onImport={handleImportFromGitHub}/>
             }
         </div>
 }
