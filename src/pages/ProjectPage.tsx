@@ -113,7 +113,7 @@ const ProjectPage = () => {
             {
                 formActive 
                     && 
-                <ReleaseForm projectId={currentRelease?.id || ""} version={currentRelease?.version || ""} description={currentRelease?.description || ""} onClose={() => handleCloseForm()} onImport={handleImportFromGitHub}/>
+                <ReleaseForm projectId={currentRelease?.id || ""} version={currentRelease?.version || ""} description={currentRelease?.description || ""} onClose={() => handleCloseForm()} onImport={async (since, until) => await handleImportFromGitHub(since, until)}/>
             }
         </div>
 }

@@ -34,3 +34,14 @@ export interface GitHubStatus {
     connected: boolean;
     username?: string;
 }
+
+export interface GitHubChange {
+    type: string,
+    id: string,
+    title: string,
+    description: string,
+    author: string,
+    date: string,
+    labels: string[],
+    url: string
+}
