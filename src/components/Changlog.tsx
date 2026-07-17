@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { deleteEntry } from "../services/ChangelogEntry";
 
-const Changelog = ({ id, description, onUpdate }: { id: string; description: string; onUpdate: (newDesc: string) => void }) => {
+const Changelog = ({ id, description, type, onUpdate }: { id: string; description: string; type: string; onUpdate: (newDesc: string, newType: string) => void }) => {
 
     const [isEditing, setIsEditing] = useState(false);
     const [newValue, setNewValue] = useState(description);
+    const [newCategory, setNewCategory] = useState(type);
 
     const handleSave = () => {
         if (newValue.trim() && newValue !== description) {
-            onUpdate(newValue);
+            onUpdate(newValue, newCategory);
         } else {
             setNewValue(description);
         }
@@ -29,6 +30,11 @@ const Changelog = ({ id, description, onUpdate }: { id: string; description: str
                     onKeyDown={(e) => { if (e.key === "Enter") handleSave(); if (e.key === "Escape") {setNewValue(description); setIsEditing(false);} }}
                     autoFocus
                 />
+                <select name="" id="" value={newCategory} onChange={(e) => setNewCategory(e.target.value)}>
+                    <option value="NEW_FEATURE">New Feature</option>
+                    <option value="BUG_FIX">Bug Fix</option>
+                    <option value="IMPROVEMENT">Improvement</option>
+                </select>
                 <div className="flex gap-5">
                     <span onClick={handleSave} className="material-symbols-outlined hover:text-green-500 hover:cursor-pointer transition duration-200">check</span>
                     <span onClick={() => setIsEditing(false)} className="material-symbols-outlined hover:text-red-500 hover:cursor-pointer transition duration-200">close</span>

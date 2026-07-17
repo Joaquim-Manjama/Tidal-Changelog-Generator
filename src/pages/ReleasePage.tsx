@@ -101,7 +101,7 @@ const ReleasePage = () => {
         }
     };
 
-    const handleUpdateEntry = (entryId: string, newDescription: string) => {
+    const handleUpdateEntry = (entryId: string, newDescription: string, newCategory: string) => {
         const update = (entries: Entry[]): Entry[] =>
             entries.map((e) => e.id === entryId ? { ...e, description: newDescription } : e);
 

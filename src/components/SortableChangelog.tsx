@@ -3,7 +3,7 @@ import { CSS } from "@dnd-kit/utilities";
 import Changelog from "./Changlog";
 import type { Entry } from "../interfaces/Objects";
 
-const SortableChangelog = ({ entry, onUpdate }: { entry: Entry; onUpdate: (newDesc: string) => void }) => {
+const SortableChangelog = ({ entry, onUpdate }: { entry: Entry; onUpdate: (newDesc: string, newtype: string) => void }) => {
     const {
         attributes,
         listeners,
@@ -33,7 +33,7 @@ const SortableChangelog = ({ entry, onUpdate }: { entry: Entry; onUpdate: (newDe
                 drag_indicator
             </span>
             <div className="flex-1">
-                <Changelog id={entry.id} description={entry.description} onUpdate={onUpdate} />
+                <Changelog id={entry.id} description={entry.description} type={entry.category} onUpdate={onUpdate} />
             </div>
         </div>
     );

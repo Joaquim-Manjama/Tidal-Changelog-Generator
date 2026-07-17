@@ -9,7 +9,7 @@ export interface CategoryBoxProps {
     entries?: Entry[];
     onAddEntry: (category: string, displayOrder: number) => void;
     onReorder?: (entries: Entry[]) => void;
-    onUpdateEntry?: (entryId: string, newDescription: string) => void;
+    onUpdateEntry?: (entryId: string, newDescription: string, newCategory: string) => void;
 }
 
 export interface HeaderProps {

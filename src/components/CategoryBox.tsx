@@ -52,7 +52,7 @@ const CategoryBox = ({ categoryType, onAddEntry, entries, onReorder, onUpdateEnt
                     <SortableContext items={entries || []} strategy={verticalListSortingStrategy}>
                         <div className="min-h-[0px]">
                             {entries?.map((entry) => (
-                                <SortableChangelog key={entry.id} entry={entry} onUpdate={(newDesc) => onUpdateEntry?.(entry.id, newDesc)} />
+                                <SortableChangelog key={entry.id} entry={entry} onUpdate={(newDesc, newType) => onUpdateEntry?.(entry.id, newDesc, newType)} />
                             ))}
                         </div>
                     </SortableContext>
