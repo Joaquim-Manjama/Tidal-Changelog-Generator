@@ -118,35 +118,38 @@ const ReleasePage = () => {
     const handleUpdateEntry = (entryId: string, newDescription: string, newCategory: string) => {
 
         const newType = convertToCategory(newCategory);
+        let displayOrder = -1;
+        let sameCategory = false;
 
-        const update = (entries: Entry[]): Entry[] =>
-            entries.map((e, index) => e.id === entryId ? { ...e, displayOrder: index, description: newDescription, category: newType } : e);
+        features.forEach(entry => {
 
-        const fixIndex = (entries: Entry[]): Entry[] =>
-            entries.map((e, index) => ({ ...e, displayOrder: index}));
+            if (entry.id == entryId) {
+                displayOrder = entry.displayOrder;
+                sameCategory = entry.category === newCategory;
+            }
 
-        const matchesCat = (entries: Entry[]) => entries.some((e) => e.id === entryId);
+        });
 
-        if (matchesCat(features)) setFeatures(update(features));
-        else if (matchesCat(fixes)) setFixes(update(fixes));
-        else setImprovements(update(improvements));
+        fixes.forEach(entry => {
 
-        setEntriesLoading(true);
-        updateEntry(entryId, features.find((e) => e.id === entryId)?.category || fixes.find((e) => e.id === entryId)?.category || improvements.find((e) => e.id === entryId)?.category || "", newDescription, 1000)
-            .catch((err) => console.error("Failed to update entry:", err))
-            .finally(() => setEntriesLoading(false));
+            if (entry.id == entryId) {
+                displayOrder = entry.displayOrder;
+                sameCategory = entry.category === newCategory;
+            }
 
-        switch(newType) {
-            case "NEW_FEATURE":
-                fixIndex(features);
-                break;
-            case "BUG_FIX":
-                fixIndex(fixes);
-                break;
+        });
 
-            default: 
-                fixIndex(improvements);
-        }
+        improvements.forEach(entry => {
+
+            if (entry.id == entryId) {
+                displayOrder = entry.displayOrder;
+                sameCategory = entry.category === newCategory;
+            }
+
+        });
+
+        updateEntry(entryId, newType, newDescription, sameCategory ? displayOrder : 1000)
+        window.location.reload()
     };
 
     const handlePublish = async () => {
