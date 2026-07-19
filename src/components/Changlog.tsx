@@ -8,7 +8,8 @@ const Changelog = ({ id, description, type, onUpdate }: { id: string; descriptio
     const [newCategory, setNewCategory] = useState(type);
 
     const handleSave = () => {
-        if (newValue.trim() && newValue !== description) {
+        if (newValue.trim()) {
+            console.log(newCategory)
             onUpdate(newValue, newCategory);
         } else {
             setNewValue(description);

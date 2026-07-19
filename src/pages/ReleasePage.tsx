@@ -100,10 +100,30 @@ const ReleasePage = () => {
             setEntriesLoading(false);
         }
     };
+    
+    type convertFunction = (type: string) => "NEW_FEATURE" | "BUG_FIX" | "IMPROVEMENT"
+
+    const convertToCategory: convertFunction = (type: string) => {
+        
+        if (type.startsWith("NEW")) {
+            return "NEW_FEATURE";
+        
+        } else if (type.startsWith("BUG")) {
+            return "BUG_FIX";
+        }        
+
+        return "IMPROVEMENT";
+    }
 
     const handleUpdateEntry = (entryId: string, newDescription: string, newCategory: string) => {
+
+        const newType = convertToCategory(newCategory);
+
         const update = (entries: Entry[]): Entry[] =>
-            entries.map((e) => e.id === entryId ? { ...e, description: newDescription } : e);
+            entries.map((e, index) => e.id === entryId ? { ...e, displayOrder: index, description: newDescription, category: newType } : e);
+
+        const fixIndex = (entries: Entry[]): Entry[] =>
+            entries.map((e, index) => ({ ...e, displayOrder: index}));
 
         const matchesCat = (entries: Entry[]) => entries.some((e) => e.id === entryId);
 
@@ -112,9 +132,21 @@ const ReleasePage = () => {
         else setImprovements(update(improvements));
 
         setEntriesLoading(true);
-        updateEntry(entryId, features.find((e) => e.id === entryId)?.category || fixes.find((e) => e.id === entryId)?.category || "IMPROVEMENT", newDescription, 0)
+        updateEntry(entryId, features.find((e) => e.id === entryId)?.category || fixes.find((e) => e.id === entryId)?.category || improvements.find((e) => e.id === entryId)?.category || "", newDescription, 1000)
             .catch((err) => console.error("Failed to update entry:", err))
             .finally(() => setEntriesLoading(false));
+
+        switch(newType) {
+            case "NEW_FEATURE":
+                fixIndex(features);
+                break;
+            case "BUG_FIX":
+                fixIndex(fixes);
+                break;
+
+            default: 
+                fixIndex(improvements);
+        }
     };
 
     const handlePublish = async () => {
