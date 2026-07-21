@@ -4,6 +4,7 @@ import type { ReleaseFormProps } from "../interfaces/Props";
 import type { GitHubChange, ReleaseObj } from "../interfaces/Objects";
 import { useUserData } from "../contexts/UserDataContext";
 import { getGitHubChanges } from "../services/Github";
+import { importChanges } from "../services/ChangelogEntry";
 
 
 const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProps) => {
@@ -79,6 +80,16 @@ const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProp
         setFilteredChanges([]);
     };
 
+    const handleLoadChanges = async () => {
+        const release = await createRelease(projectId, versionInput, descriptionInput);
+        const releaseId = await release?.id;
+        console.log(releaseId)
+        const response = await importChanges(await release?.id, filteredChanges)
+        console.log(response)
+        onClose();
+        window.location.reload();
+    }
+
 
     useEffect(() => {
  
@@ -141,7 +152,7 @@ const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProp
                                     <button type="button" onClick={handleSelectAll} className="bg-gray-700 p-4 rounded-lg shadow-xl text-white hover:cursor-pointer hover:bg-gray-800 w-[150px] scale-[0.8]">Select All</button>
                                     <button type="button" onClick={handleSelectNone} className="bg-gray-700 p-4 rounded-lg shadow-xl text-white hover:cursor-pointer hover:bg-gray-800 w-[150px] scale-[0.8]">Select None</button>
                                 </div>
-                                <button type="button" className="bg-dark-teal-700 p-4 rounded-lg shadow-xl text-white hover:cursor-pointer hover:bg-dark-teal-800 w-[250px] ml-[-60px]">Load Changes</button>
+                                <button onClick={() => handleLoadChanges()} type="button" className="bg-dark-teal-700 p-4 rounded-lg shadow-xl text-white hover:cursor-pointer hover:bg-dark-teal-800 w-[250px] ml-[-60px]" >Load Changes</button>
                             </div>
                         </>    
                         :
@@ -178,7 +189,7 @@ const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProp
                         </>
                     }
                 </form>
-            </div>  
+            </div>
 }
 
 export default ReleaseForm;

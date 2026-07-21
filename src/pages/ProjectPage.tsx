@@ -12,9 +12,7 @@ import { getGitHubChanges } from "../services/Github";
 const ProjectPage = () => {
 
     const [formActive, setFormActive] = useState(false);
-    //const [importActive, setImportActive] = useState(false);
     const [currentRelease, setCurrentRelease] = useState<{id: string, version: string, description: string} | null>(null);
-
     const {currentProject, releases, setUserProjectReleases} = useUserData();
 
     const navigate = useNavigate();
@@ -113,7 +111,7 @@ const ProjectPage = () => {
             {
                 formActive 
                     && 
-                <ReleaseForm projectId={currentRelease?.id || ""} version={currentRelease?.version || ""} description={currentRelease?.description || ""} onClose={() => handleCloseForm()} onImport={async (since, until) => await handleImportFromGitHub(since, until)}/>
+                <ReleaseForm projectId={currentProject?.id || ""} version={currentRelease?.version || ""} description={currentRelease?.description || ""} onClose={() => handleCloseForm()} onImport={async (since, until) => await handleImportFromGitHub(since, until)}/>
             }
         </div>
 }
