@@ -3,10 +3,10 @@ import CategoryBox from "../components/CategoryBox";
 import SideBar from "../components/SideBar";
 import { useUserData } from "../contexts/UserDataContext";
 import type { Entry } from "../interfaces/Objects";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { getAllEntries, updateEntry } from "../services/ChangelogEntry";
 import CategoryForm from "../components/CategoryForm";
-import { toggleReleaseStatus, updateRelease } from "../services/Releases";
+import { deleteRelease, toggleReleaseStatus, updateRelease } from "../services/Releases";
 import ConfirmationModal from "../components/ConfirmationModal";
 
 const InlineEdit = ({ value, onSave }: { value: string; onSave: (v: string) => void }) => {
@@ -67,6 +67,8 @@ const ReleasePage = () => {
     const {currentRelease, setCurrentProjectRelease} = useUserData();
 
     const {setCurrentEntryCategory, setCurrentEntryDisplayOrder} = useUserData();
+
+    const navigate = useNavigate()
 
     const handleAddEntry = (categoryType: string, displayOrder: number) => {
         setCurrentEntryCategory(categoryType);
@@ -169,6 +171,12 @@ const ReleasePage = () => {
             .catch((err) => console.error(`Failed to update release ${field}:`, err));
     };
 
+    const handleDeleteRelease = async () => {
+        const response = await deleteRelease(currentRelease?.id)
+        console.log(response)
+        navigate("/project")
+    }
+
     useEffect(() => {
 
         const setEntries = async () => {
@@ -199,7 +207,10 @@ const ReleasePage = () => {
                 <NavLink to="/project" className={"absolute top-[19px] bg-black p-4 pt-2 pb-1 rounded-xl bg-transparent scale-[1.5] font-normal hover:text-gray-300 hover:cursor-pointer transition duration-200 ease-in-out"}>
                     <span className="material-symbols-outlined">keyboard_double_arrow_left</span>
                 </NavLink>
-                <div className="flex h-[100%] justify-end items-center mr-[220px] p-5">
+                <div className="flex h-[100%] justify-end items-center mr-[220px] p-5 gap-10">
+                    <button onClick={() => handleDeleteRelease()} className="bg-red-500 text-white p-1 pl-2 pr-2 rounded hover:bg-red-700 hover:cursor-pointer">
+                        <span className="material-symbols-outlined mt-1">delete</span>
+                    </button>
                     <button onClick={() => setIsConfirmOpen(true)} className={`text-${currentRelease.status === "DRAFT" ? "green-600" : "red-500"} font-thin bg-gray-700 border border-white/2 p-2 pl-4 pr-4 rounded hover:cursor-pointer`}>{currentRelease.status === "DRAFT" ? "Publish" : "Unpublish"}</button>
                 </div>
             </div>
