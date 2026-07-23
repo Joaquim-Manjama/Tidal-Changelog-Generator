@@ -42,7 +42,11 @@ export interface ReleaseProps {
     version: string,
     description: string,
     createdAt: string,
+    releaseAt: string,
     status: string,
+    numberOfFeatures: number;
+    numberOfFixes: number;
+    numberOfImprovements: number;
     onEdit: (id: string, version: string, description: string) => void;
 }
 

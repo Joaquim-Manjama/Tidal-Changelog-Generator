@@ -18,7 +18,10 @@ export interface ReleaseObj {
     description: string;
     createdAt: string;
     status: string
-    releasedAt: string;
+    releaseAt: string;
+    numberOfFeatures: number;
+    numberOfFixes: number;
+    numberOfImprovements: number;
 }
 
 export interface GitHubRepo {

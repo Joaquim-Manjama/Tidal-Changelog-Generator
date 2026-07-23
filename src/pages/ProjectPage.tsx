@@ -97,7 +97,11 @@ const ProjectPage = () => {
                                         version={release.version}
                                         description={release.description}
                                         createdAt={release.createdAt.substring(0, 10)}
+                                        releaseAt={release.releaseAt}
                                         status={release.status}
+                                        numberOfFeatures={release.numberOfFeatures}
+                                        numberOfFixes={release.numberOfFixes}
+                                        numberOfImprovements={release.numberOfImprovements}
                                         onEdit={handleEditRelease}
                                         />
                                 ))

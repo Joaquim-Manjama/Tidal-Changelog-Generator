@@ -5,7 +5,7 @@ import type { ReleaseProps } from "../interfaces/Props";
 import { toggleReleaseStatus } from "../services/Releases";
 import ConfirmationModal from "./ConfirmationModal";
 
-const Release = ({id, version, description, createdAt, status, onEdit}: ReleaseProps) => {
+const Release = ({id, version, description, createdAt, releaseAt, status, numberOfFeatures, numberOfFixes, numberOfImprovements, onEdit}: ReleaseProps) => {
 
     const {setCurrentProjectRelease} = useUserData();
     const navigate = useNavigate();
@@ -26,7 +26,7 @@ const Release = ({id, version, description, createdAt, status, onEdit}: ReleaseP
         if (e.target.tagName == "BUTTON") return;
 
         if (setCurrentProjectRelease) {
-            setCurrentProjectRelease({id, version, description, createdAt, status});
+            setCurrentProjectRelease({id, version, description, createdAt, releaseAt, status, numberOfFeatures, numberOfFixes, numberOfImprovements});
             navigate("release")
         }
     }
@@ -40,11 +40,11 @@ const Release = ({id, version, description, createdAt, status, onEdit}: ReleaseP
                     <p className={status=="DRAFT"? "text-yellow-700" : "text-green-600"}>[{status}]</p>
                 </div>
                 <div className="flex justify-between">
-                    <p>✨0 features</p>
+                    <p>✨{numberOfFeatures} features</p>
                     <p>.</p>
-                    <p>🐛0 fixes</p>
+                    <p>🐛{numberOfFixes} fixes</p>
                     <p>.</p>
-                    <p>⚡0 improvements</p>
+                    <p>⚡{numberOfImprovements} improvements</p>
                 </div>
                 <p>{description}</p>
                 <div className="flex gap-5 justify-end">
