@@ -14,12 +14,14 @@ const ProjectPage = () => {
     const [formActive, setFormActive] = useState(false);
     const [currentRelease, setCurrentRelease] = useState<{id: string, version: string, description: string} | null>(null);
     const {currentProject, releases, setUserProjectReleases} = useUserData();
+    const [editing, setEditing] = useState<boolean>(false)
 
     const navigate = useNavigate();
 
     const handleCloseForm = () => {
         setFormActive(false);
         setCurrentRelease(null);
+        setEditing(false)
     }
 
     const handleImportFromGitHub = async (sinceDate: string, untilDate: string) => {
@@ -39,6 +41,7 @@ const ProjectPage = () => {
     const handleEditRelease = (id: string, version: string, description: string) => {
         setCurrentRelease({id, version, description})
         setFormActive(true);
+        setEditing(true);
     }
 
     useEffect(() => {
@@ -115,7 +118,7 @@ const ProjectPage = () => {
             {
                 formActive 
                     && 
-                <ReleaseForm projectId={currentProject?.id || ""} version={currentRelease?.version || ""} description={currentRelease?.description || ""} onClose={() => handleCloseForm()} onImport={async (since, until) => await handleImportFromGitHub(since, until)}/>
+                <ReleaseForm projectId={currentProject?.id || ""} version={currentRelease?.version || ""} description={currentRelease?.description || ""} onClose={() => handleCloseForm()} onImport={async (since, until) => await handleImportFromGitHub(since, until)} editing={editing} releaseId={currentRelease?.id || ""}/>
             }
         </div>
 }

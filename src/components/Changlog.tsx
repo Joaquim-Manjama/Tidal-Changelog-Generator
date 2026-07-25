@@ -17,8 +17,8 @@ const Changelog = ({ id, description, type, onUpdate }: { id: string; descriptio
         setIsEditing(false);
     };
 
-    const handleOnDelete = () => {
-        deleteEntry(id);
+    const handleOnDelete = async () => {
+        await deleteEntry(id);
         window.location.reload();
     };
 

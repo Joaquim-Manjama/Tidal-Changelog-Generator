@@ -7,7 +7,7 @@ import { getGitHubChanges } from "../services/Github";
 import { importChanges } from "../services/ChangelogEntry";
 
 
-const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProps) => {
+const ReleaseForm = ({projectId, version, description, onClose, editing, releaseId}: ReleaseFormProps) => {
     
     const inputStyle = `focus:border-dark-teal-700 focus:outline-none p-3 shadow rounded border border-white/10 mb-5 w-full -mt-4`;
 
@@ -81,11 +81,17 @@ const ReleaseForm = ({projectId, version, description, onClose}: ReleaseFormProp
     };
 
     const handleLoadChanges = async () => {
-        const release = await createRelease(projectId, versionInput, descriptionInput);
-        const releaseId = await release?.id;
-        console.log(releaseId)
-        const response = await importChanges(await release?.id, filteredChanges)
-        console.log(response)
+        
+        if (editing) {
+            const response = await importChanges(releaseId, filteredChanges)
+            console.log(response)    
+        } else {
+            const release = await createRelease(projectId, versionInput, descriptionInput);
+            const id = await release?.id;
+            console.log(id)
+            const response = await importChanges(await release?.id, filteredChanges)
+            console.log(response)
+        }
         onClose();
         window.location.reload();
     }
