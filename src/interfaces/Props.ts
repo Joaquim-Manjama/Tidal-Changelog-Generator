@@ -36,6 +36,7 @@ export interface ReleaseFormProps{
     onClose: () => void;
     onImport:(sinceDate: string, untilDate: string) => void;
     editing: boolean;
+    releaseId: string;
 }
 
 export interface ReleaseProps {

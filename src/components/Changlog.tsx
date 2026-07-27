@@ -18,7 +18,9 @@ const Changelog = ({ id, description, type, onUpdate }: { id: string; descriptio
     };
 
     const handleOnDelete = async () => {
-        await deleteEntry(id);
+        console.log("ID: " + id)
+        const response = await deleteEntry(id);
+        console.log(response);
         window.location.reload();
     };
 
