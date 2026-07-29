@@ -25,6 +25,8 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/project/settings" element={<ProjectSettings />} />
             <Route path="/project/release" element={<ReleasePage />} />
+            <Route path="/project/:slug" element={<App/>} />
+            <Route path="/project/:slug/release/:version" element={<ProjectPage/>} />
             {/* Page Not Found*/}
             <Route path="*" element={<NotFound />} />
         </Routes>
