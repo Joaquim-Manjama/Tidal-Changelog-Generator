@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { ProjectData } from "../interfaces/Objects";
+import type { ProjectData, ReleaseInfo } from "../interfaces/Objects";
 import NotFound from "./NotFound";
 import { getProject } from "../services/Public";
 import { useParams } from "react-router";
@@ -21,18 +21,19 @@ const PublicProjectPage = () => {
             try {
                 const response = await getProject(slug as string);
 
-                if (response) {
+                if (response)
                     setProjectData(response);
 
-                    projectData?.publishedReleases.forEach(release => {
+            } catch (err) {
+                console.error("Error: ", err);
+            }
+
+            if (projectData) {
+                projectData?.publishedReleases.forEach((release: ReleaseInfo) => {
                         setTotalFeatures(prev => prev + release.numberOfFeatures);
                         setTotalFixes(prev => prev + release.numberOfFixes);
                         setTotalImprovements(prev => prev + release.numberOfImprovements);
                     });
-                }
-
-            } catch (err) {
-                console.error("Error: ", err);
             }
         }
 
@@ -45,14 +46,14 @@ const PublicProjectPage = () => {
                     projectData ? 
                         
                         <div className="flex flex-col w-full h-screen bg-[#f4f8fb]">
-                            <div className="bg-[#001021] w-full h-[280px]">
+                            <div className="bg-[#001021] w-full">
 
-                                <div className="w-full flex flex-col border-b-1 border-white/20 p-6 gap-5">
+                                <div className="w-full flex flex-col border-b-1 border-white/20 p-6 md:px-10 gap-5">
                                     <p className="text-white/40">Project Overview</p>
                                     
                                     <div className="flex gap-5">
                                         <h1 className="text-4xl md:text-5xl font-medium">{projectData?.name}</h1>
-                                        <span className="text-sm bg-[#0caadc] p-1 h-[27px] rounded font-medium">{projectData?.publishedReleases?.[projectData?.publishedReleases.length - 1]?.version}</span>
+                                        <span className="text-xs bg-[#0caadc] p-1 h-[25px] rounded font-medium tracking-widest">{projectData?.publishedReleases?.[projectData?.publishedReleases.length - 1]?.version}</span>
                                     </div>
 
                                     <div className="flex gap-10">
@@ -73,26 +74,26 @@ const PublicProjectPage = () => {
 
                                 </div>
 
-                                <div className="w-full flex p-6 gap-10">
+                                <div className="w-full flex px-6 py-3 md:px-10 gap-10">
                                         
                                         <div className="flex flex-col">
-                                            <p>{projectData?.publishedReleases.length}</p>
-                                            <p>Releases</p>
+                                            <p className="text-2xl font-medium">{projectData?.publishedReleases.length}</p>
+                                            <p className="text-white/40 text-xs font-thin">RELEASES</p>
                                         </div>
 
                                         <div className="flex flex-col">
-                                            <p>{totalFeatures}</p>
-                                            <p>Features</p>
+                                            <p className="text-2xl font-medium">{totalFeatures}</p>
+                                            <p className="text-white/40 text-xs font-thin">FEATURES</p>
                                         </div>
 
                                         <div className="flex flex-col">
-                                            <p>{totalFixes}</p>
-                                            <p>Fixes</p>
+                                            <p className="text-2xl font-medium">{totalFixes}</p>
+                                            <p className="text-white/40 text-xs font-thin">FIXES</p>
                                         </div>
 
                                         <div className="flex flex-col">
-                                            <p>{totalImprovements}</p>
-                                            <p>Improvements</p>
+                                            <p className="text-2xl font-medium">{totalImprovements}</p>
+                                            <p className="text-white/40 text-xs font-thin">IMPROVEMENTS</p>
                                         </div>
 
                                 </div>
