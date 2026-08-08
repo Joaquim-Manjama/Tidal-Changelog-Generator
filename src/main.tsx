@@ -12,6 +12,7 @@ import SettingsPage from './pages/SettingsPage.tsx';
 import UserDataProvider from './contexts/UserDataContext.tsx';
 import './index.css'
 import PublicProjectPage from './pages/PublicProjectPage.tsx';
+import ReleaseInfoPage from './pages/ReleaseInfoPage.tsx';
 
 
 createRoot(document.getElementById('root')!).render(
@@ -27,7 +28,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/project/settings" element={<ProjectSettings />} />
             <Route path="/project/release" element={<ReleasePage />} />
             <Route path="/project/:slug" element={<PublicProjectPage/>} />
-            <Route path="/project/:slug/release/:version" element={<ProjectPage/>} />
+            <Route path="/project/:slug/release/:version" element={<ReleaseInfoPage/>} />
             {/* Page Not Found*/}
             <Route path="*" element={<NotFound />} />
         </Routes>

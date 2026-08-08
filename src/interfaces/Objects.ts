@@ -64,3 +64,17 @@ export interface ReleaseInfo {
     numberOfFixes: number;
     numberOfImprovements: number;
 }
+
+interface EntryInfo {
+    description: string;
+    category: string;
+} 
+
+export interface ReleaseDetails {
+    version: string;
+    description: string;
+    releasedAt: string;
+    features: EntryInfo[];
+    fixes: EntryInfo[];
+    improvements: EntryInfo[];
+}

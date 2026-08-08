@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, version } from "react";
 import type { ProjectData, ReleaseInfo } from "../interfaces/Objects";
 import NotFound from "./NotFound";
 import { getProject } from "../services/Public";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 const Release = ({release}: {release: ReleaseInfo}) => {
+
+    const navigate = useNavigate()
 
     const getMonthName = (monthNumber: number) => {
         
@@ -20,7 +22,11 @@ const Release = ({release}: {release: ReleaseInfo}) => {
         return monthNames[monthNumber];
     }
 
-    return <div className="bg-white flex flex-col gap-5 border border-[#c8dde9] rounded">
+    const goToReleaseInfoPage = () => {
+        navigate(`release/${release?.version}`);
+    }
+
+    return <div onClick={() => goToReleaseInfoPage()} className="bg-white flex flex-col gap-5 border border-[#c8dde9] rounded hover:cursor-pointer hover:border-1 hover:border-[#3a6880] hover:shadow-xl">
 
                 <div className="flex justify-between p-6 md:px-10 border border-b-[#c8dde9]">
                     <div className="flex gap-5">
@@ -53,15 +59,11 @@ const Release = ({release}: {release: ReleaseInfo}) => {
 const PublicProjectPage = () => {
 
     const [projectData, setProjectData] = useState<ProjectData| null>(null);
-    const [totalFeatures, setTotalFeatures] = useState<number>(0);
-    const [totalFixes, setTotalFixes] = useState<number>(0);
-    const [totalImprovements, setTotalImprovements] = useState<number>(0);
 
 
     const slug = useParams().slug;
 
     useEffect(() => {
-
         const getData = async () => {
 
             try {
@@ -73,25 +75,26 @@ const PublicProjectPage = () => {
             } catch (err) {
                 console.error("Error: ", err);
             }
-
-            if (projectData) {
-                projectData?.publishedReleases.forEach((release: ReleaseInfo) => {
-                        setTotalFeatures(prev => prev + release.numberOfFeatures);
-                        setTotalFixes(prev => prev + release.numberOfFixes);
-                        setTotalImprovements(prev => prev + release.numberOfImprovements);
-                    });
-            }
         }
 
         getData();
+    }, [slug])
 
-    }, [])
+    const {
+        totalFeatures,
+        totalFixes,
+        totalImprovements
+    } = projectData ? projectData.publishedReleases.reduce((acc, release) => ({
+        totalFeatures: acc.totalFeatures + release.numberOfFeatures,
+        totalFixes: acc.totalFixes + release.numberOfFixes,
+        totalImprovements: acc.totalImprovements + release.numberOfImprovements
+    }), { totalFeatures: 0, totalFixes: 0, totalImprovements: 0 }) : { totalFeatures: 0, totalFixes: 0, totalImprovements: 0 };
 
     return  <>
                 {
                     projectData ? 
                         
-                        <div className="flex flex-col w-full h-screen bg-[#f4f8fb]">
+                        <div className="flex flex-col w-full h-screen bg-[#f4f8fb] overflow-y-auto">
                             {/* Header */}
                             <div className="bg-[#001021] w-full">
 
@@ -155,7 +158,7 @@ const PublicProjectPage = () => {
                                     <p>{projectData?.publishedReleases.length} total</p>
                                 </div>
 
-                                <div className="flex flex-col gap-5 mt-5">
+                                <div className="flex flex-col gap-10 mt-5">
                                     {projectData?.publishedReleases.map((release: ReleaseInfo) => (
                                         <Release key={release.version} release={release}/>
                                     ))}
