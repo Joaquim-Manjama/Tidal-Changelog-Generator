@@ -1,10 +1,10 @@
-import { useEffect, useState, version } from "react";
+import { useEffect, useState} from "react";
 import type { ProjectData, ReleaseInfo } from "../interfaces/Objects";
 import NotFound from "./NotFound";
 import { getProject } from "../services/Public";
 import { useNavigate, useParams } from "react-router";
 
-const Release = ({release}: {release: ReleaseInfo}) => {
+const Release = ({release, index}: {release: ReleaseInfo, index: number}) => {
 
     const navigate = useNavigate()
 
@@ -31,7 +31,7 @@ const Release = ({release}: {release: ReleaseInfo}) => {
                 <div className="flex justify-between p-6 md:px-10 border border-b-[#c8dde9]">
                     <div className="flex gap-5">
                         <p className="text-black font-medium text-lg">{release.version.replace(/v/g, "")}</p>
-                        <span className="bg-[#0caadc] text-white text-xs rounded-[30px] px-2 py-1 h-[23px] tracking-widest">Latest</span>
+                        {index == 0 && <span className="bg-[#0caadc] text-white text-xs rounded-[30px] px-2 py-1 h-[23px] tracking-widest">Latest</span>}
                     </div>
                     <p className="text-[#3a6880] text-xs tracking-wides">{`${getMonthName(parseInt(release.releasedAt.substring(5, 7)) - 1)} ${release.releasedAt.substring(8, 10)}, ${release.releasedAt.substring(0, 4)}`}</p>
                 </div>
@@ -159,8 +159,8 @@ const PublicProjectPage = () => {
                                 </div>
 
                                 <div className="flex flex-col gap-10 mt-5">
-                                    {projectData?.publishedReleases.map((release: ReleaseInfo) => (
-                                        <Release key={release.version} release={release}/>
+                                    {projectData?.publishedReleases.map((release: ReleaseInfo, index: number) => (
+                                        <Release key={index} release={release} index={index}/>
                                     ))}
                                 </div>
 
