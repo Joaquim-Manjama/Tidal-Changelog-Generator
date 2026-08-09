@@ -44,10 +44,39 @@ const ReleaseInfoPage = () => {
     return  <>
                 {
                     releaseDetails? 
-                    <div className="flex flex-col text-#001021">
-                        <div className="flex justify-between px-6 md:px-10 py-4 w-full h-[60px] bg-white shadow-xl border-b-1 border-[#a0bece]">
-                            <p className="text-black font-medium">Release Notes</p>
+                    <div className="flex flex-col text-[#001021]">
+                        <div className="flex justify-between px-6 md:px-10 py-4 w-full h-[60px] bg-white shadow-xl border-b-1 border-[#a0bece]/50">
+                            <p className="text-black font-medium">#Release Notes</p>
                             <p className="text-[#a0bece] text-sm">{`${getMonthName(parseInt(releaseDetails?.releasedAt.substring(5, 7)) - 1)} ${parseInt(releaseDetails?.releasedAt.substring(8, 10))}, ${releaseDetails?.releasedAt.substring(0, 4)}`}</p>
+                        </div>
+                        <div className="w-full h-screen bg-[#f4f7fa] px-6 md:px-10 py-10 flex flex-col gap-5">
+
+                            <div className="flex gap-5">
+                                <p className="text-[#1481ba] bg-[#1481ba]/10 text-sm tracking-widest border-2 border-[#1481ba]/50 p-1 rounded">{releaseDetails?.version}</p>
+                                <p className="text-[#11b5e4] bg-[#11b5e4]/10 text-xs tracking-widest border-2 border-[#11b5e4]/50 p-1 mt-[2px] rounded">● LATEST RELEASE</p>
+                            </div>
+
+                            <div className="text-5xl md:text-6xl font-medium">
+                                <p>What's new</p>
+                                <p className="text-[#1481ba]">in {releaseDetails.version.replace("v", "")}</p>
+                            </div>
+
+                            <p className="text-[#001021]/60 w-[70%] text-md md:text-lg border-b border-[#a0bece]/50">{releaseDetails.description}</p>
+
+                            <div className="border-b border-[#a0bece]/50">
+                                <p className="text-[#1481ba] text-3xl font-medium">#New Features</p>
+                            </div>
+
+                            <div className="border-b border-[#a0bece]/50">
+                                <p className="text-[#11b5e4] text-3xl font-medium">#Bug Fixes</p>
+                            </div>
+
+                            <div className="border-b border-[#a0bece]/50">
+                                <p className="text-[#0caadc] text-3xl font-medium">#Improvements</p>
+                            </div>
+
+                            <p className="text-[#a0bece] text-sm">{`Released ${getMonthName(parseInt(releaseDetails?.releasedAt.substring(5, 7)) - 1)} ${parseInt(releaseDetails?.releasedAt.substring(8, 10))}, ${releaseDetails?.releasedAt.substring(0, 4)}`}</p>
+
                         </div>
                     </div>
 
