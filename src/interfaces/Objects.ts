@@ -65,7 +65,7 @@ export interface ReleaseInfo {
     numberOfImprovements: number;
 }
 
-interface EntryInfo {
+export interface EntryInfo {
     description: string;
     category: string;
 } 
