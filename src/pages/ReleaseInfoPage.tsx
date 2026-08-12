@@ -17,6 +17,14 @@ const EntryList = ({entries, colour}: {entries: EntryInfo[], colour: string}) =>
             </div>
 }
 
+const ShareButton = ({icon, text, colour}: {icon: string, text: string, colour: string}) => {
+    
+    return <button className={`flex gap-2 text-[${colour}] bg-[${colour}]/15 p-2 border-2 border-[${colour}]/20 rounded`}>
+                <span className={`${icon} scale-[1.2] mt-1`}></span>
+                {text}
+            </button>
+}
+
 const ReleaseInfoPage = () => {
 
     const [releaseDetails, setReleaseDetails] = useState<null | ReleaseDetails>(null)
@@ -91,7 +99,36 @@ const ReleaseInfoPage = () => {
                                 <EntryList entries={releaseDetails?.improvements} colour="#0caadc"/>
                             </div>
 
-                            <p className="text-[#a0bece] text-sm mb-10">{`Released ${getMonthName(parseInt(releaseDetails?.releasedAt.substring(5, 7)) - 1)} ${parseInt(releaseDetails?.releasedAt.substring(8, 10))}, ${releaseDetails?.releasedAt.substring(0, 4)}`}</p>
+                            <div className="p-6 bg-white rounded-[10px] shadow border border-[#a0bece]/50 mt-5">
+                                <p className="font-medium">Share this release</p>
+                                <p className="text-sm text-[#a0bece] mb-3">Let your network know what's new</p>
+                                <div className="flex gap-5 text-sm">
+                                    <ShareButton 
+                                        icon="fa fa-linkedin"
+                                        text="LinkedIn"
+                                        colour="#0072b1"
+                                    />
+                                    
+                                    <ShareButton 
+                                        icon="fa fa-whatsapp"
+                                        text="Whatsapp"
+                                        colour="#047857"
+                                    />
+
+                                    <ShareButton 
+                                        icon="fa fa-reddit-alien"
+                                        text="Reddit"
+                                        colour="#FF5700"
+                                    />
+                                    
+                                    <button className="flex text-[#708b9b] bg-[#a0bece]/15 p-2 border-2 border-[#a0bece]/20 rounded">
+                                        <span className="material-symbols-outlined scale-[0.8]">content_copy</span>
+                                        Copy link
+                                    </button>
+                                </div>
+                            </div>
+
+                            <p className="text-[#a0bece] text-sm mb-20 ">{`Released ${getMonthName(parseInt(releaseDetails?.releasedAt.substring(5, 7)) - 1)} ${parseInt(releaseDetails?.releasedAt.substring(8, 10))}, ${releaseDetails?.releasedAt.substring(0, 4)}`}</p>
 
                         </div>
                     </div>
