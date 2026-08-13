@@ -110,14 +110,12 @@ const PublicProjectPage = () => {
                                         <div className="flex gap-3">
                                             <p className="text-white/40 text-xs font-thin">SLUG</p>
                                             <p className="text-white/75 text-sm">{projectData?.slug}</p>
-                                            <button className="px-2 py-0.5 text-xs bg-[#e4eff6] text-[#3a6880] rounded hover:bg-[#1481ba] hover:text-white hover:cursor-pointer">Copy</button>
                                         </div>
 
                                         {projectData?.githubRepo && (
                                             <div className="flex gap-3">
                                                 <p className="text-white/40 text-xs font-thin">URL</p>
-                                                <p className="underline text-white/75 text-sm">{projectData?.githubRepo}</p>
-                                                <button className="px-2 py-0.5 text-xs bg-[#e4eff6] text-[#3a6880] rounded hover:bg-[#1481ba] hover:text-white hover:cursor-pointer">Copy</button>
+                                                <a href={projectData?.githubRepo} target="blank" className="underline text-white/75 text-sm">{projectData?.githubRepo}</a>
                                             </div>
                                         )}
                                     </div>

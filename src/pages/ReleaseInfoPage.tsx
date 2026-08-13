@@ -17,19 +17,14 @@ const EntryList = ({entries, colour}: {entries: EntryInfo[], colour: string}) =>
             </div>
 }
 
-const ShareButton = ({icon, text, colour}: {icon: string, text: string, colour: string}) => {
-    
-    return <button className={`flex gap-2 text-[${colour}] bg-[${colour}]/15 p-2 border-2 border-[${colour}]/20 rounded`}>
-                <span className={`${icon} scale-[1.2] mt-1`}></span>
-                {text}
-            </button>
-}
-
 const ReleaseInfoPage = () => {
 
     const [releaseDetails, setReleaseDetails] = useState<null | ReleaseDetails>(null)
-    
+    const [copied, setCopied] = useState<boolean>(false);
+
     const {slug, version} = useParams();
+
+    const URL = `http://localhost:5173/project/${slug}/release/${version}`
 
     const getMonthName = (monthNumber: number) => {
         
@@ -61,6 +56,15 @@ const ReleaseInfoPage = () => {
         setUp();
 
     }, [])
+
+    useEffect(() => {
+
+        if (!copied) return;
+        const timer = setTimeout(() => setCopied(false), 5000);
+
+        return () => clearTimeout(timer);
+
+    }, [copied])
 
     return  <>
                 {
@@ -103,29 +107,51 @@ const ReleaseInfoPage = () => {
                                 <p className="font-medium">Share this release</p>
                                 <p className="text-sm text-[#a0bece] mb-3">Let your network know what's new</p>
                                 <div className="flex gap-5 text-sm">
-                                    <ShareButton 
-                                        icon="fa fa-linkedin"
-                                        text="LinkedIn"
-                                        colour="#0072b1"
-                                    />
                                     
-                                    <ShareButton 
-                                        icon="fa fa-whatsapp"
-                                        text="Whatsapp"
-                                        colour="#047857"
-                                    />
-
-                                    <ShareButton 
-                                        icon="fa fa-reddit-alien"
-                                        text="Reddit"
-                                        colour="#FF5700"
-                                    />
+                                    <a href={`https://www.linkedin.com/sharing/share-offsite/`} target="_blank" rel="noopener noreferrer" className="flex gap-2 text-[#0072b1] bg-[#0072b1]/15 p-2 border-2 border-[#0072b1]/20 rounded">
+                                        <span className="fa fa-linkedin scale-[1.2] mt-1"></span>
+                                        LinkdeIn
+                                    </a>
                                     
-                                    <button className="flex text-[#708b9b] bg-[#a0bece]/15 p-2 border-2 border-[#a0bece]/20 rounded">
-                                        <span className="material-symbols-outlined scale-[0.8]">content_copy</span>
-                                        Copy link
+                                    <button className="flex gap-2 text-[#25D366] bg-[#25D366]/15 p-2 border-2 border-[#25D366]/20 rounded">
+                                        <span className="fa fa-whatsapp scale-[1.2] mt-1"></span>
+                                        Whatsapp
                                     </button>
+
+                                    <button className="flex gap-2 text-[#FF5700] bg-[#FF5700]/15 p-2 border-2 border-[#FF5700]/20 rounded">
+                                        <span className="fa fa-reddit-alien scale-[1.2] mt-1"></span>
+                                        Reddit
+                                    </button>
+                                    
+                                    {   
+                                        copied ?
+
+                                            <button className="flex text-[#708b9b] bg-[#a0bece]/15 p-2 border-2 border-[#a0bece]/20 rounded">
+                                                <span className="material-symbols-outlined scale-[0.8]">check</span>
+                                                Copied
+                                            </button>
+                                        
+                                        :
+                                            <button onClick={() => {navigator.clipboard.writeText(URL); setCopied(true)}} className="flex text-[#708b9b] bg-[#a0bece]/15 p-2 border-2 border-[#a0bece]/20 rounded hover:cursor-pointer hover:bg-[#a0bece]/30">
+                                                <span className="material-symbols-outlined scale-[0.8]">content_copy</span>
+                                                Copy link
+                                            </button>
+                                    }
                                 </div>
+                            </div>
+
+                            <div className="tides w-full rounded-[10px] shadow-xl p-6">
+                                    <div className="flex gap-5">
+                                        <span className="material-symbols-outlined text-[#0caadc] bg-[#0caadc]/20 rounded-[5px] p-1 h-[35px] border border-[#0caadc]/50">mail</span>
+                                        <div className="flex flex-col">
+                                            <p className="text-white font-medium">Stay in the loop</p>
+                                            <p className="text-sm text-[#a0bece]">Get notified by email whenever a new release is published.</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex mt-5 gap-3 justify-center">
+                                        <input type="text" className="bg-white rounded text-black text-sm p-2 w-[60%]" placeholder="you@example.com"/>
+                                        <button className="bg-[#0caadc] rounded text-sm tracking-wide p-2">Notify me</button>
+                                    </div>
                             </div>
 
                             <p className="text-[#a0bece] text-sm mb-20 ">{`Released ${getMonthName(parseInt(releaseDetails?.releasedAt.substring(5, 7)) - 1)} ${parseInt(releaseDetails?.releasedAt.substring(8, 10))}, ${releaseDetails?.releasedAt.substring(0, 4)}`}</p>

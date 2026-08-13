@@ -89,11 +89,25 @@
   color: white;
 }
 
+.tides {
+  min-height: 150px;
+  background: linear-gradient(
+    -45deg,
+    var(--color-ink-black-950),
+    var(--color-ocean-blue-950),
+    var(--color-dark-teal-900),
+    var(--color-ink-black-950)
+  );
+  animation: tidalFlow 18s ease infinite;
+}
+
 @keyframes tidalFlow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
+
 
 .texture {
   background-color: #e5e7eb;
