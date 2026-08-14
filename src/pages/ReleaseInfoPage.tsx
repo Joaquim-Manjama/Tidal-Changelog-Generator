@@ -108,20 +108,20 @@ const ReleaseInfoPage = () => {
                                 <p className="text-sm text-[#a0bece] mb-3">Let your network know what's new</p>
                                 <div className="flex gap-5 text-sm">
                                     
-                                    <a href={`https://www.linkedin.com/sharing/share-offsite/`} target="_blank" rel="noopener noreferrer" className="flex gap-2 text-[#0072b1] bg-[#0072b1]/15 p-2 border-2 border-[#0072b1]/20 rounded">
+                                    <a onClick={() => navigator.clipboard.writeText(URL)} href={`https://www.linkedin.com/sharing/share-offsite/`} target="_blank" rel="noopener noreferrer" className="flex gap-2 text-[#0072b1] bg-[#0072b1]/15 p-2 border-2 border-[#0072b1]/20 rounded">
                                         <span className="fa fa-linkedin scale-[1.2] mt-1"></span>
                                         LinkdeIn
                                     </a>
                                     
-                                    <button className="flex gap-2 text-[#25D366] bg-[#25D366]/15 p-2 border-2 border-[#25D366]/20 rounded">
-                                        <span className="fa fa-whatsapp scale-[1.2] mt-1"></span>
-                                        Whatsapp
-                                    </button>
+                                    <a onClick={() => navigator.clipboard.writeText(URL)} href={`https://x.com/intent/tweet`} target="_blank" className="flex gap-2 text-[black] bg-[#000000]/15 p-2 border-2 border-[#000000]/20 rounded">
+                                        <span className="fa fa-twitter scale-[1.2] mt-1"></span>
+                                        X / Twitter
+                                    </a>
 
-                                    <button className="flex gap-2 text-[#FF5700] bg-[#FF5700]/15 p-2 border-2 border-[#FF5700]/20 rounded">
+                                    <a onClick={() => navigator.clipboard.writeText(URL)} href={`https://www.reddit.com/submit`} target="_blank" className="flex gap-2 text-[#FF5700] bg-[#FF5700]/15 p-2 border-2 border-[#FF5700]/20 rounded">
                                         <span className="fa fa-reddit-alien scale-[1.2] mt-1"></span>
                                         Reddit
-                                    </button>
+                                    </a>
                                     
                                     {   
                                         copied ?
