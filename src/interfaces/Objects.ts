@@ -48,3 +48,33 @@ export interface GitHubChange {
     labels: string[],
     url: string
 }
+
+export interface ProjectData {
+    name: string;
+    slug: string;
+    githubRepo: string;
+    publishedReleases: ReleaseInfo[];
+}
+
+export interface ReleaseInfo {
+    version: string;
+    description: string;
+    releasedAt: string;
+    numberOfFeatures: number;
+    numberOfFixes: number;
+    numberOfImprovements: number;
+}
+
+export interface EntryInfo {
+    description: string;
+    category: string;
+} 
+
+export interface ReleaseDetails {
+    version: string;
+    description: string;
+    releasedAt: string;
+    features: EntryInfo[];
+    fixes: EntryInfo[];
+    improvements: EntryInfo[];
+}
