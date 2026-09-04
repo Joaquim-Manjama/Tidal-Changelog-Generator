@@ -58,13 +58,13 @@ const SettingsPage = () => {
                 </div>
                 <h1 className="text-3xl mt-10 mb-3">Connected Accounts</h1>
                 <div className="border rounded-xl p-4 bg-ocean-blue-900 text-gray-200">
-                    <p className="flex flex-col gap-5 items-center">
+                    <div className="flex flex-col gap-5 items-center">
                         <div className="flex gap-1 w-full">
                             <span className="font-medium text-dark-teal-700">GitHub: </span>
                             <p>{githubStatus?.connected ? `Connected as ${githubStatus.username}` : "Not Connected"}</p>
                         </div>
                         <GitHubConnectButton connected={githubStatus?.connected || false} />
-                    </p>
+                    </div>
                 </div>
                 <h1 className="text-3xl mt-10 mb-3">Danger Zone</h1>
                 <div className="border rounded-xl p-4 bg-ocean-blue-900 text-gray-200 flex justify-center">
