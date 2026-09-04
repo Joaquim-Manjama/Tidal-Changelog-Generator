@@ -3,6 +3,7 @@ import type { ReleaseDetails, EntryInfo } from "../interfaces/Objects"
 import { getRelease } from "../services/Public"
 import { useParams } from "react-router"
 import NotFound from "./NotFound"
+import { subscribe, unsubscribe } from "../services/Subscibe"
 
 const EntryList = ({entries, colour}: {entries: EntryInfo[], colour: string}) => {
 
@@ -21,6 +22,8 @@ const ReleaseInfoPage = () => {
 
     const [releaseDetails, setReleaseDetails] = useState<null | ReleaseDetails>(null)
     const [copied, setCopied] = useState<boolean>(false);
+    const [email, setEmail] = useState<string>("");
+    const [unsubscribing, setUnsubscribing] = useState<boolean>(false);
 
     const {slug, version} = useParams();
 
@@ -38,6 +41,17 @@ const ReleaseInfoPage = () => {
         ];
 
         return monthNames[monthNumber];
+    }
+
+    const handleSubscribe = async (email: string, slug: string) => { 
+        await subscribe(email, slug);
+        alert("Subscription successful! You will receive notifications for new releases.");
+        window.location.reload();
+    }
+
+    const handleUnsubscribe = async (email: string, slug: string) => { 
+        alert("Unsubscription successful! You will no longer receive notifications for this project.");
+        window.location.reload();
     }
 
     useEffect(() => {
@@ -149,10 +163,20 @@ const ReleaseInfoPage = () => {
                                         </div>
                                     </div>
                                     <div className="flex mt-5 gap-3 justify-center">
-                                        <input type="text" className="bg-white rounded text-black text-sm p-2 w-[60%]" placeholder="you@example.com"/>
-                                        <button className="bg-[#0caadc] rounded text-sm tracking-wide p-2">Notify me</button>
+                                        <input value={email} onChange={(e) => setEmail(e.target.value)} type="text" className="bg-white rounded text-black text-sm p-2 w-[60%]" placeholder="you@example.com"/>
+                                        <button className="bg-[#0caadc] rounded text-sm tracking-wide p-2" onClick={() => handleSubscribe(email, slug as string)}>Notify me</button>
                                     </div>
                             </div>
+
+                            {unsubscribing &&
+                                <div className="flex mt-5 gap-3 justify-center">
+                                        <input value={email} onChange={(e) => setEmail(e.target.value)} type="text" className="bg-white rounded text-black text-sm p-2 w-[60%]" placeholder="you@example.com"/>
+                                        <button className="bg-[#ff6b6b] rounded text-sm tracking-wide p-2" onClick={() => handleUnsubscribe(email, slug as string)}>Unsubscribe</button>
+                                        <span className="material-symbols-outlined hover:cursor-pointer hover:text-[#ff6b6b]" onClick={() => setUnsubscribing(false)}>close</span>
+                                </div>
+                            }
+
+                            <p className="text-[#a0bece] text-sm text-center"> Don't want to be notified anymore? <span onClick={() => setUnsubscribing(true)} className="text-[#0caadc] hover:underline cursor-pointer">Unsubscribe</span></p>
 
                             <p className="text-[#a0bece] text-sm mb-20 ">{`Released ${getMonthName(parseInt(releaseDetails?.releasedAt.substring(5, 7)) - 1)} ${parseInt(releaseDetails?.releasedAt.substring(8, 10))}, ${releaseDetails?.releasedAt.substring(0, 4)}`}</p>
 
