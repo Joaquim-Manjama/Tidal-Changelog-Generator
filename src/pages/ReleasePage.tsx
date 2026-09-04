@@ -66,7 +66,7 @@ const ReleasePage = () => {
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const {currentRelease, setCurrentProjectRelease} = useUserData();
 
-    const {setCurrentEntryCategory, setCurrentEntryDisplayOrder} = useUserData();
+    const {setCurrentEntryCategory, setCurrentEntryDisplayOrder, currentProject} = useUserData();
 
     const navigate = useNavigate()
 
@@ -208,6 +208,7 @@ const ReleasePage = () => {
                     <span className="material-symbols-outlined">keyboard_double_arrow_left</span>
                 </NavLink>
                 <div className="flex h-[100%] justify-end items-center mr-[220px] p-5 gap-10">
+                    <button onClick={() => navigate("/project/" + currentProject?.slug + "/release/" + currentRelease?.version)} className="rounded px-3 bg-[#0caadc] text-white hover:bg-[#0a9bc9]">View</button>
                     <button onClick={() => handleDeleteRelease()} className="bg-red-500 text-white p-1 pl-2 pr-2 rounded hover:bg-red-700 hover:cursor-pointer">
                         <span className="material-symbols-outlined mt-1">delete</span>
                     </button>
